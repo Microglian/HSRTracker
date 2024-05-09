@@ -1,0 +1,3 @@
+imagemap = {
+    "Clara": "clara.png"
+}
