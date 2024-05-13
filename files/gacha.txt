@@ -1,0 +1,3 @@
+gacha00000001,high,1,Clara,E1
+gacha00000002,high,3,Clara,E2
+gacha00000003,high,2,Clara,E3
