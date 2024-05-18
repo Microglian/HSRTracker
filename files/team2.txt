@@ -1,0 +1,4 @@
+Jingliu,70,Something Irreplacable,70,1,1,0,3,5,7,6
+Topaz,60,The Unreachable Side,80,0,1,0,1,2,3,4
+Robin,20,Echoes of the Coffin,40,1,1,1,3,3,3,3
+Fu Xuan,80,Incessant Rain,20,0,0,1,2,6,4,10

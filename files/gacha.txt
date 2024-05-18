@@ -1,3 +1,13 @@
-gacha00000001,high,1,Clara,E1
-gacha00000002,high,3,Clara,E2
-gacha00000003,high,2,Clara,E3
+gacha00000001,High,9,Clara,E0
+gacha00000002,High,2,Sparkle,E6
+gacha00000003,High,3,Patience is All You Need,E2
+gacha00000004,High,4,Himeko,E5
+gacha00000039,Low,6,In the Night,E0
+gacha00000040,Med,6,Jingliu,E0
+gacha00000041,Med,7,Acheron,E3
+gacha00000042,Low,7,Robin,E6
+gacha00000043,High,5,Silver Wolf,E0
+gacha00000044,High,6,Bronya,E1
+gacha00000045,High,7,Topaz,E5
+gacha00000046,High,8,Acheron,E0
+gacha00000047,Med,8,Ruan Mei,E1
