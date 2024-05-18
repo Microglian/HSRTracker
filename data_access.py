@@ -121,7 +121,7 @@ def set_teams(teams:list) -> None:
                 case "LevelledTrace":
                     contents.append(f"LevelledTrace,{task.character},{task.uuid},{task.pos},{task.trace},{task.target}\n")
                 case "Relic":
-                    contents.append(f"Level,{task.character},{task.uuid},{task.pos},{task.set},{task.slot},{task.mainstat}")
+                    contents.append(f"Relic,{task.character},{task.uuid},{task.pos},{task.set},{task.slot},{task.mainstat}")
                     for i in range(4):
                         if task.substats[i] != "":
                             contents[-1] += f",{task.substats[i]}"

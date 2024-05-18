@@ -358,7 +358,7 @@ class TeamColumn():
         
         # Basic Level
         self.tracebasictext = tk.StringVar(self.frame, f"B{character['BasicLV']}")
-        self.tracebasic = tk.OptionMenu(self.frame, self.tracebasictext, self.tracebasictext, *["B10","B9","B8","B7","B6","B5","B4","B3","B2","B1"], command=partial(team_set_trace_basic, master.team_index, char_index))
+        self.tracebasic = tk.OptionMenu(self.frame, self.tracebasictext, self.tracebasictext, *["B6","B5","B4","B3","B2","B1"], command=partial(team_set_trace_basic, master.team_index, char_index))
         self.tracebasic['menu'].delete(0)
         self.tracebasic.config(bg="#212B87", fg="#FFFFFF", activebackground="#212B87", activeforeground="#FFFFFF", justify="left", highlightthickness=0)
         self.tracebasic['menu'].config(bg="#212B87", fg="#FFFFFF", activebackground="#212B87", activeforeground="#FFFFFF")
@@ -425,7 +425,7 @@ class TeamColumn():
         self.traceA6.place(x=208,y=74,width=58,height=20)
         
         # New Task Dropdown & Button
-        self.newtaskvar = tk.StringVar(self.frame, "Level")
+        self.newtaskvar = tk.StringVar(self.frame, "Char Level")
         self.newtaskbox = tk.OptionMenu(self.frame, self.newtaskvar, self.newtaskvar, *["Char Level", "Weapon Level", "Trace", "Ascension", "Relic"], command=self.update_new_task_command)
         self.newtaskbox['menu'].delete(0)
         self.newtaskbox.config(bg="#C117A5", fg="#FFFFFF", activebackground="#C117A5", activeforeground="#FFFFFF", justify="left", highlightthickness=0)
@@ -474,10 +474,11 @@ class TeamColumn():
         self.newtaskbutton.config(command=self.newtaskcommand)
 
 class TeamTaskWidget():
-    def __init__(self, uuid, pos, character) -> None:
+    def __init__(self, uuid, pos, master) -> None:
         self.uuid = uuid
         self.pos = pos
-        self.character = character
+        self.master = master
+        self.character = master.character
         if team.characternames.index(self.character) < 29:
             self.is5star = True
         else:
@@ -486,19 +487,19 @@ class TeamTaskWidget():
     
     def add_common_buttons(self) -> None:
         # Task button: move up
-        self.buttonUp = tk.Button(self.taskframe, text="Up", command=partial(team_move_up, self.uuid, self.character))
+        self.buttonUp = tk.Button(self.taskframe, text="Up", command=partial(team_move_up, self.master.team_index, self.uuid, self.character))
         self.buttonUp.config(activebackground="#2F6E6E", activeforeground="#FFFFFF", highlightthickness=0)
         self.buttonUp.place(x=241,y=3,width=30,height=20)
         
         # Task button: delete
-        self.buttonDelete = tk.Button(self.taskframe, text="Del", command=partial(team_delete_task, self.uuid))
+        self.buttonDelete = tk.Button(self.taskframe, text="Del", command=partial(team_delete_task, self.master.team_index, self.uuid))
         self.buttonDelete.config(activebackground="#2F6E6E", activeforeground="#FFFFFF", highlightthickness=0)
         self.buttonDelete.place(x=241,y=25,width=30,height=20)
                
 
 class TeamTaskWidgetLevel(TeamTaskWidget):
     def __init__(self, uuid, master, pos, level) -> None:
-        TeamTaskWidget.__init__(self, uuid, pos, master.character)
+        TeamTaskWidget.__init__(self, uuid, pos, master)
         self.frameheight = 48
         self.taskframe = ttk.Frame(master.frame_list, width=274, height=self.frameheight, borderwidth=0, relief="solid")
         self.bgimage = tk.PhotoImage(file="./images/leveltask.png")
@@ -506,7 +507,7 @@ class TeamTaskWidgetLevel(TeamTaskWidget):
         self.bg.place(x=-2 ,y=-2)
         
         self.leveltext = tk.IntVar(self.taskframe, level)
-        self.levelwidget = tk.OptionMenu(self.taskframe, self.leveltext, self.leveltext, *[80,70,60,50,40,30,20], command=partial(team_level_setlevel, self.uuid))
+        self.levelwidget = tk.OptionMenu(self.taskframe, self.leveltext, self.leveltext, *[80,70,60,50,40,30,20], command=partial(team_level_setlevel, self.master.team_index, self.uuid))
         self.levelwidget['menu'].delete(0)
         self.levelfont = tkFont.Font(size=12)
         self.levelwidget.config(bg="#009A97", fg="#FFFFFF", activebackground="#009A97", activeforeground="#FFFFFF", justify="left", highlightthickness=0,font=self.levelfont)
@@ -565,7 +566,7 @@ class TeamTaskWidgetLevel(TeamTaskWidget):
         
 class TeamTaskWidgetWeaponLevel(TeamTaskWidget):
     def __init__(self, uuid, master, pos, level) -> None:
-        TeamTaskWidget.__init__(self, uuid, pos, master.character)
+        TeamTaskWidget.__init__(self, uuid, pos, master)
         self.weapon = master.characterdict['Weapon']
         self.frameheight = 48
         self.taskframe = ttk.Frame(master.frame_list, width=274, height=self.frameheight, borderwidth=0, relief="solid")
@@ -574,7 +575,7 @@ class TeamTaskWidgetWeaponLevel(TeamTaskWidget):
         self.bg.place(x=-2 ,y=-2)
         
         self.leveltext = tk.IntVar(self.taskframe, level)
-        self.levelwidget = tk.OptionMenu(self.taskframe, self.leveltext, self.leveltext, *[80,70,60,50,40,30,20], command=partial(team_weapon_setlevel, self.uuid))
+        self.levelwidget = tk.OptionMenu(self.taskframe, self.leveltext, self.leveltext, *[80,70,60,50,40,30,20], command=partial(team_weapon_setlevel, self.master.team_index, self.uuid))
         self.levelwidget['menu'].delete(0)
         self.levelfont = tkFont.Font(size=12)
         self.levelwidget.config(bg="#08679D", fg="#FFFFFF", activebackground="#08679D", activeforeground="#FFFFFF", justify="left", highlightthickness=0,font=self.levelfont)
@@ -647,7 +648,7 @@ class TeamTaskWidgetWeaponLevel(TeamTaskWidget):
 
 class TeamTaskWidgetAscension(TeamTaskWidget):
     def __init__(self, uuid, master, pos, trace) -> None:        
-        TeamTaskWidget.__init__(self, uuid, pos, master.character)
+        TeamTaskWidget.__init__(self, uuid, pos, master)
         self.frameheight = 48
         self.taskframe = ttk.Frame(master.frame_list, width=274, height=self.frameheight, borderwidth=0, relief="solid")
         self.bgimage = tk.PhotoImage(file="./images/ascensiontask.png")
@@ -655,7 +656,7 @@ class TeamTaskWidgetAscension(TeamTaskWidget):
         self.bg.place(x=-2 ,y=-2)  
         
         self.ascensiontext = tk.IntVar(self.taskframe, trace)
-        self.ascensionwidget = tk.OptionMenu(self.taskframe, self.ascensiontext, self.ascensiontext, *["A2","A4","A6"], command=partial(team_ascension_set, self.uuid))
+        self.ascensionwidget = tk.OptionMenu(self.taskframe, self.ascensiontext, self.ascensiontext, *["A2","A4","A6"], command=partial(team_ascension_set, self.master.team_index, self.uuid))
         self.ascensionwidget['menu'].delete(0)
         self.ascensionfont = tkFont.Font(size=12)
         self.ascensionwidget.config(bg="#673E84", fg="#FFFFFF", activebackground="#673E84", activeforeground="#FFFFFF", justify="left", highlightthickness=0,font=self.ascensionfont)
@@ -726,10 +727,11 @@ class TeamTaskWidgetAscension(TeamTaskWidget):
         self.matcanv.place(x=102,y=3)
         
         self.add_common_buttons()
-    
+
+
 class TeamTaskWidgetTrace(TeamTaskWidget):
     def __init__(self, uuid, master, pos, trace, target) -> None:        
-        TeamTaskWidget.__init__(self, uuid, pos, master.character)
+        TeamTaskWidget.__init__(self, uuid, pos, master)
         self.frameheight = 72
         self.taskframe = ttk.Frame(master.frame_list, width=274, height=self.frameheight, borderwidth=0, relief="solid")
         self.bgimage = tk.PhotoImage(file="./images/tracetask.png")
@@ -737,7 +739,7 @@ class TeamTaskWidgetTrace(TeamTaskWidget):
         self.bg.place(x=-2 ,y=-2)  
         
         self.tracetext = tk.IntVar(self.taskframe, trace)
-        self.tracewidget = tk.OptionMenu(self.taskframe, self.tracetext, self.tracetext, *["Basic","Skill","Ult","Talent"], command=partial(team_trace_settrace, self.uuid))
+        self.tracewidget = tk.OptionMenu(self.taskframe, self.tracetext, self.tracetext, *["Basic","Skill","Ult","Talent"], command=partial(team_trace_settrace, self.master.team_index, self.uuid))
         self.tracewidget['menu'].delete(0)
         self.tracefont = tkFont.Font(size=12)
         self.tracewidget.config(bg="#404484", fg="#FFFFFF", activebackground="#404484", activeforeground="#FFFFFF", justify="left", highlightthickness=0,font=self.tracefont)
@@ -749,7 +751,7 @@ class TeamTaskWidgetTrace(TeamTaskWidget):
             self.targetoptions = [6,5,4,3,2]
         else:
             self.targetoptions = [10,9,8,7,6,5,4,3,2]
-        self.targetwidget = tk.OptionMenu(self.taskframe, self.targettext, self.targettext, *self.targetoptions, command=partial(team_trace_settarget, self.uuid))
+        self.targetwidget = tk.OptionMenu(self.taskframe, self.targettext, self.targettext, *self.targetoptions, command=partial(team_trace_settarget, self.master.team_index, self.uuid))
         self.targetwidget['menu'].delete(0)
         self.targetfont = tkFont.Font(size=12)
         self.targetwidget.config(bg="#404484", fg="#FFFFFF", activebackground="#404484", activeforeground="#FFFFFF", justify="left", highlightthickness=0,font=self.targetfont)
@@ -881,7 +883,7 @@ class TeamTaskWidgetTrace(TeamTaskWidget):
     
 class TeamTaskWidgetRelic(TeamTaskWidget):
     def __init__(self, uuid, master, pos, set, slot, mainstat, substats:list) -> None:        
-        TeamTaskWidget.__init__(self, uuid, pos, master.character)
+        TeamTaskWidget.__init__(self, uuid, pos, master)
         self.frameheight = 96
         self.taskframe = ttk.Frame(master.frame_list, width=274, height=self.frameheight, borderwidth=0, relief="solid")
         self.bgimage = tk.PhotoImage(file="./images/relictask.png")
@@ -889,7 +891,7 @@ class TeamTaskWidgetRelic(TeamTaskWidget):
         self.bg.place(x=-2 ,y=-2)
         
         self.settext = tk.StringVar(self.taskframe, set)
-        self.setwidget = tk.OptionMenu(self.taskframe, self.settext, self.settext, *team.relicsets, command=partial(team_relic_setset, self.uuid))
+        self.setwidget = tk.OptionMenu(self.taskframe, self.settext, self.settext, *team.relicsets, command=partial(team_relic_setset, self.master.team_index, self.uuid))
         self.setwidget['menu'].delete(0)
         self.setfont = tkFont.Font(size=10)
         self.setwidget.config(bg="#9E517E", fg="#FFFFFF", activebackground="#9E517E", activeforeground="#FFFFFF", justify="left", highlightthickness=0,font=self.setfont)
@@ -897,14 +899,14 @@ class TeamTaskWidgetRelic(TeamTaskWidget):
         self.setwidget.place(x=4,y=4,width=155,height=28)
         
         self.slottext = tk.StringVar(self.taskframe, slot)
-        self.slotwidget = tk.OptionMenu(self.taskframe, self.slottext, self.slottext, *team.relicpieces[set], command=partial(team_relic_setslot, self.uuid))
+        self.slotwidget = tk.OptionMenu(self.taskframe, self.slottext, self.slottext, *team.relicpieces[set], command=partial(team_relic_setslot, self.master.team_index, self.uuid))
         self.slotwidget['menu'].delete(0)
         self.slotwidget.config(bg="#9E517E", fg="#FFFFFF", activebackground="#9E517E", activeforeground="#FFFFFF", justify="left", highlightthickness=0,font=self.setfont)
         self.slotwidget['menu'].config(bg="#9E517E", fg="#FFFFFF", activebackground="#9E517E", activeforeground="#FFFFFF")
         self.slotwidget.place(x=160,y=4,width=60,height=28)
         
         self.stattext = tk.StringVar(self.taskframe, mainstat)
-        self.statwidget = tk.OptionMenu(self.taskframe, self.stattext, self.stattext, *team.relicmainstats[slot], command=partial(team_relic_setstat, self.uuid))
+        self.statwidget = tk.OptionMenu(self.taskframe, self.stattext, self.stattext, *team.relicmainstats[slot], command=partial(team_relic_setstat, self.master.team_index, self.uuid))
         self.statwidget['menu'].delete(0)
         self.statfont = tkFont.Font(size=9)
         self.statwidget.config(bg="#9E517E", fg="#FFFFFF", activebackground="#9E517E", activeforeground="#FFFFFF", justify="left", highlightthickness=0,font=self.statfont)
@@ -912,7 +914,7 @@ class TeamTaskWidgetRelic(TeamTaskWidget):
         self.statwidget.place(x=4,y=52,width=70,height=28)
         
         self.substat1text = tk.StringVar(self.taskframe, substats[0])
-        self.substat1widget = tk.OptionMenu(self.taskframe, self.substat1text, self.substat1text, *team.relicsubstats, command=partial(team_relic_setsubstat, self.uuid, 0))
+        self.substat1widget = tk.OptionMenu(self.taskframe, self.substat1text, self.substat1text, *team.relicsubstats, command=partial(team_relic_setsubstat, self.master.team_index, self.uuid, 0))
         self.substat1widget['menu'].delete(0)
         self.substatfont = tkFont.Font(size=9)
         self.substat1widget.config(bg="#FF6DD6", fg="#000000", activebackground="#FF6DD6", activeforeground="#000000", justify="left", highlightthickness=0,font=self.statfont)
@@ -920,21 +922,21 @@ class TeamTaskWidgetRelic(TeamTaskWidget):
         self.substat1widget.place(x=91,y=41,width=70,height=24)
         
         self.substat2text = tk.StringVar(self.taskframe, substats[1])
-        self.substat2widget = tk.OptionMenu(self.taskframe, self.substat2text, self.substat2text, *team.relicsubstats, command=partial(team_relic_setsubstat, self.uuid, 1))
+        self.substat2widget = tk.OptionMenu(self.taskframe, self.substat2text, self.substat2text, *team.relicsubstats, command=partial(team_relic_setsubstat, self.master.team_index, self.uuid, 1))
         self.substat2widget['menu'].delete(0)
         self.substat2widget.config(bg="#FF6DD6", fg="#000000", activebackground="#FF6DD6", activeforeground="#000000", justify="left", highlightthickness=0,font=self.statfont)
         self.substat2widget['menu'].config(bg="#FF6DD6", fg="#000000", activebackground="#FF6DD6", activeforeground="#000000")
         self.substat2widget.place(x=162,y=41,width=70,height=24)
         
-        self.substat3text = tk.StringVar(self.taskframe, substats[1])
-        self.substat3widget = tk.OptionMenu(self.taskframe, self.substat3text, self.substat3text, *team.relicsubstats, command=partial(team_relic_setsubstat, self.uuid, 2))
+        self.substat3text = tk.StringVar(self.taskframe, substats[2])
+        self.substat3widget = tk.OptionMenu(self.taskframe, self.substat3text, self.substat3text, *team.relicsubstats, command=partial(team_relic_setsubstat, self.master.team_index, self.uuid, 2))
         self.substat3widget['menu'].delete(0)
         self.substat3widget.config(bg="#FF6DD6", fg="#000000", activebackground="#FF6DD6", activeforeground="#000000", justify="left", highlightthickness=0,font=self.statfont)
         self.substat3widget['menu'].config(bg="#FF6DD6", fg="#000000", activebackground="#FF6DD6", activeforeground="#000000")
         self.substat3widget.place(x=91,y=66,width=70,height=24)
         
-        self.substat4text = tk.StringVar(self.taskframe, substats[1])
-        self.substat4widget = tk.OptionMenu(self.taskframe, self.substat4text, self.substat4text, *team.relicsubstats, command=partial(team_relic_setsubstat, self.uuid, 3))
+        self.substat4text = tk.StringVar(self.taskframe, substats[3])
+        self.substat4widget = tk.OptionMenu(self.taskframe, self.substat4text, self.substat4text, *team.relicsubstats, command=partial(team_relic_setsubstat, self.master.team_index, self.uuid, 3))
         self.substat4widget['menu'].delete(0)
         self.substat4widget.config(bg="#FF6DD6", fg="#000000", activebackground="#FF6DD6", activeforeground="#000000", justify="left", highlightthickness=0,font=self.statfont)
         self.substat4widget['menu'].config(bg="#FF6DD6", fg="#000000", activebackground="#FF6DD6", activeforeground="#000000")
@@ -1196,131 +1198,354 @@ def gacha_set_target(uuid, target):
 
 
 def team_set_character(team_ref, char_ref, char_name):
-    print(team_ref)
-    print(char_ref)
-    print(char_name)
+    print(f"setting {team_ref} {char_ref} to {char_name}")
+    match char_ref:
+        case 0:
+            tabset.teamsource[team_ref-1].character1["Name"] = char_name
+        case 1:
+            tabset.teamsource[team_ref-1].character2["Name"] = char_name
+        case 2:
+            tabset.teamsource[team_ref-1].character3["Name"] = char_name
+        case 3:
+            tabset.teamsource[team_ref-1].character4["Name"] = char_name
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 
 def team_set_weapon(team_ref, char_ref, wep_name):
-    print(team_ref)
-    print(char_ref)
-    print(wep_name)
+    print(f"setting {team_ref} {char_ref} weapon to {wep_name}")
+    match char_ref:
+        case 0:
+            tabset.teamsource[team_ref-1].character1["Weapon"] = wep_name
+        case 1:
+            tabset.teamsource[team_ref-1].character2["Weapon"] = wep_name
+        case 2:
+            tabset.teamsource[team_ref-1].character3["Weapon"] = wep_name
+        case 3:
+            tabset.teamsource[team_ref-1].character4["Weapon"] = wep_name
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 
 def team_set_character_level(team_ref, char_ref, char_level):
-    print(team_ref)
-    print(char_ref)
-    print(char_level)
+    print(f"setting {team_ref} {char_ref} level to {char_level}")
+    match char_ref:
+        case 0:
+            tabset.teamsource[team_ref-1].character1["Level"] = char_level
+        case 1:
+            tabset.teamsource[team_ref-1].character2["Level"] = char_level
+        case 2:
+            tabset.teamsource[team_ref-1].character3["Level"] = char_level
+        case 3:
+            tabset.teamsource[team_ref-1].character4["Level"] = char_level
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 
 def team_set_weapon_level(team_ref, char_ref, wep_level):
-    print(team_ref)
-    print(char_ref)
-    print(wep_level)
-
+    print(f"setting {team_ref} {char_ref} weapon level to {wep_level}")
+    match char_ref:
+        case 0:
+            tabset.teamsource[team_ref-1].character1["WeaponLV"] = wep_level
+        case 1:
+            tabset.teamsource[team_ref-1].character2["WeaponLV"] = wep_level
+        case 2:
+            tabset.teamsource[team_ref-1].character3["WeaponLV"] = wep_level
+        case 3:
+            tabset.teamsource[team_ref-1].character4["WeaponLV"] = wep_level
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 def team_set_trace_basic(team_ref, char_ref, basic_level):
-    print(team_ref)
-    print(char_ref)
-    print(basic_level)
-
+    print(f"setting {team_ref} {char_ref} basic to {basic_level}")
+    match char_ref:
+        case 0:
+            tabset.teamsource[team_ref-1].character1["BasicLV"] = basic_level[1:]
+        case 1:
+            tabset.teamsource[team_ref-1].character2["BasicLV"] = basic_level[1:]
+        case 2:
+            tabset.teamsource[team_ref-1].character3["BasicLV"] = basic_level[1:]
+        case 3:
+            tabset.teamsource[team_ref-1].character4["BasicLV"] = basic_level[1:]
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 def team_set_trace_skill(team_ref, char_ref, skill_level):
-    print(team_ref)
-    print(char_ref)
-    print(skill_level)
+    print(f"setting {team_ref} {char_ref} skill to {skill_level}")
+    match char_ref:
+        case 0:
+            tabset.teamsource[team_ref-1].character1["SkillLV"] = skill_level[1:]
+        case 1:
+            tabset.teamsource[team_ref-1].character2["SkillLV"] = skill_level[1:]
+        case 2:
+            tabset.teamsource[team_ref-1].character3["SkillLV"] = skill_level[1:]
+        case 3:
+            tabset.teamsource[team_ref-1].character4["SkillLV"] = skill_level[1:]
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 
 def team_set_trace_ult(team_ref, char_ref, ult_level):
-    print(team_ref)
-    print(char_ref)
-    print(ult_level)
+    print(f"setting {team_ref} {char_ref} ult to {ult_level}")
+    match char_ref:
+        case 0:
+            tabset.teamsource[team_ref-1].character1["UltLV"] = ult_level[1:]
+        case 1:
+            tabset.teamsource[team_ref-1].character2["UltLV"] = ult_level[1:]
+        case 2:
+            tabset.teamsource[team_ref-1].character3["UltLV"] = ult_level[1:]
+        case 3:
+            tabset.teamsource[team_ref-1].character4["UltLV"] = ult_level[1:]
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 
 def team_set_trace_talent(team_ref, char_ref, talent_level):
-    print(team_ref)
-    print(char_ref)
-    print(talent_level)
+    print(f"setting {team_ref} {char_ref} talent to {talent_level}")
+    match char_ref:
+        case 0:
+            tabset.teamsource[team_ref-1].character1["TalentLV"] = talent_level[1:]
+        case 1:
+            tabset.teamsource[team_ref-1].character2["TalentLV"] = talent_level[1:]
+        case 2:
+            tabset.teamsource[team_ref-1].character3["TalentLV"] = talent_level[1:]
+        case 3:
+            tabset.teamsource[team_ref-1].character4["TalentLV"] = talent_level[1:]
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 
 def team_set_ascension(team_ref, char_ref, asc_trace, status):
-    print(team_ref)
-    print(char_ref)
-    print(asc_trace)
-    print(status)
+    print(f"setting {team_ref} {char_ref} {asc_trace} to {status[-1]}")
+    if status[-1] == "Y":
+        on = 1
+    else: 
+        on = 0
+    match char_ref:
+        case 0:
+            tabset.teamsource[team_ref-1].character1[f"{asc_trace}Trace"] = on
+        case 1:
+            tabset.teamsource[team_ref-1].character2[f"{asc_trace}Trace"] = on
+        case 2:
+            tabset.teamsource[team_ref-1].character3[f"{asc_trace}Trace"] = on
+        case 3:
+            tabset.teamsource[team_ref-1].character4[f"{asc_trace}Trace"] = on
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 
 def team_add_task(team_ref, char_name, task_type):
-    print(team_ref)
-    print(char_name)
-    print(task_type)
+    print(f"Adding new {task_type} task to {team_ref} {char_name}")
+    if char_name == tabset.frames_teams[team_ref-1].char1.characterdict["Name"]:
+        tasklist = tabset.frames_teams[team_ref-1].char1tasks
+    elif char_name == tabset.frames_teams[team_ref-1].char2.characterdict["Name"]:
+        tasklist = tabset.frames_teams[team_ref-1].char2tasks
+    elif char_name == tabset.frames_teams[team_ref-1].char3.characterdict["Name"]:
+        tasklist = tabset.frames_teams[team_ref-1].char3tasks
+    elif char_name == tabset.frames_teams[team_ref-1].char4.characterdict["Name"]:
+        tasklist = tabset.frames_teams[team_ref-1].char4tasks
+
+    
+    if len(tasklist) > 0:
+        pos = tasklist[len(tasklist)-1].pos + 1
+    else:
+        pos = 1
+    match task_type:
+        case "Char Level":
+            tabset.teamsource[team_ref-1].tasks.append(team.TeamTaskLevel(char_name, f"team{data.next_uuid()}", pos, 80))
+        case "Weapon Level":
+            tabset.teamsource[team_ref-1].tasks.append(team.TeamTaskWeaponLevel(char_name, f"team{data.next_uuid()}", pos, 80))
+        case "Trace":
+            tabset.teamsource[team_ref-1].tasks.append(team.TeamTaskLevelledTrace(char_name, f"team{data.next_uuid()}", pos, "Basic", 6))
+        case "Ascension":
+            tabset.teamsource[team_ref-1].tasks.append(team.TeamTaskAscensionTrace(char_name, f"team{data.next_uuid()}", pos, "A2"))
+        case "Relic":
+            tabset.teamsource[team_ref-1].tasks.append(team.TeamTaskRelic(char_name, f"team{data.next_uuid()}", pos, "Wild Wheat", "Head", "HP"))
+    
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 
 def team_clear_column(team_ref, char_name):
-    print(team_ref)
-    print(char_name)
+    print(f"Deleting all items for {team_ref} {char_name}")
+    tasks_to_pop = []
+    for i in range(len(tabset.teamsource[team_ref-1].tasks)):
+        if tabset.teamsource[team_ref-1].tasks[i].character == char_name:
+            tasks_to_pop.append(i)
+    tasks_to_pop = tasks_to_pop[::-1]
+    for i in tasks_to_pop:
+        tabset.teamsource[team_ref-1].tasks.pop(i)
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 
 def team_swap_character(team_ref, char_ref, direction):
-    print(team_ref)
-    print(char_ref)
-    print(direction)
+    print(f"In {team_ref}, swapping {char_ref} {direction}")
+    match char_ref:
+        case 0:
+            temp = tabset.teamsource[team_ref-1].character1
+            if direction == "Right":
+                tabset.teamsource[team_ref-1].character1 = tabset.teamsource[team_ref-1].character2
+                tabset.teamsource[team_ref-1].character2 = temp
+        case 1:
+            temp = tabset.teamsource[team_ref-1].character2
+            if direction == "Right":
+                tabset.teamsource[team_ref-1].character2 = tabset.teamsource[team_ref-1].character3
+                tabset.teamsource[team_ref-1].character3 = temp
+            elif direction == "Left":
+                tabset.teamsource[team_ref-1].character2 = tabset.teamsource[team_ref-1].character1
+                tabset.teamsource[team_ref-1].character1 = temp
+        case 2:
+            temp = tabset.teamsource[team_ref-1].character3
+            if direction == "Right":
+                tabset.teamsource[team_ref-1].character3 = tabset.teamsource[team_ref-1].character4
+                tabset.teamsource[team_ref-1].character4 = temp
+            elif direction == "Left":
+                tabset.teamsource[team_ref-1].character3 = tabset.teamsource[team_ref-1].character2
+                tabset.teamsource[team_ref-1].character2 = temp
+        case 3:
+            temp = tabset.teamsource[team_ref-1].character4
+            if direction == "Left":
+                tabset.teamsource[team_ref-1].character4 = tabset.teamsource[team_ref-1].character3
+                tabset.teamsource[team_ref-1].character3 = temp
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
     
     
-def team_level_setlevel(uuid, level):
-    print(uuid)
-    print(level)
+def team_level_setlevel(team_ref, uuid, level):
+    print(f"Setting {team_ref} {uuid} level to {level}")
+    for teamtask in tabset.teamsource[team_ref-1].tasks:
+        if teamtask.uuid == uuid:
+            teamtask.level = level
+            break
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 
-def team_weapon_setlevel(uuid, level):
-    print(uuid)
-    print(level)
+def team_weapon_setlevel(team_ref, uuid, level):
+    print(f"Setting {team_ref} {uuid} weapon level to {level}")
+    for teamtask in tabset.teamsource[team_ref-1].tasks:
+        if teamtask.uuid == uuid:
+            teamtask.level = level
+            break
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 
-def team_ascension_set(uuid, trace):
-    print(uuid)
-    print(trace)
+def team_ascension_set(team_ref, uuid, trace):
+    print(f"Setting {team_ref} {uuid} ascension to {trace}")
+    for teamtask in tabset.teamsource[team_ref-1].tasks:
+        if teamtask.uuid == uuid:
+            teamtask.trace = trace
+            break
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 
-def team_trace_settrace(uuid, trace):
-    print(uuid)
-    print(trace)
+def team_trace_settrace(team_ref, uuid, trace):
+    print(f"Setting {team_ref} {uuid} trace to {trace}")
+    for teamtask in tabset.teamsource[team_ref-1].tasks:
+        if teamtask.uuid == uuid:
+            teamtask.trace = trace
+            break
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
     
 
-def team_trace_settarget(uuid, target):
-    print(uuid)
-    print(target)
+def team_trace_settarget(team_ref, uuid, target):
+    print(f"Setting {team_ref} {uuid} target to {target}")
+    for teamtask in tabset.teamsource[team_ref-1].tasks:
+        if teamtask.uuid == uuid:
+            teamtask.target = target
+            break
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
     
 
-def team_relic_setset(uuid, set):
-    print(uuid)
-    print(set)
+def team_relic_setset(team_ref, uuid, set):
+    print(f"Setting {team_ref} {uuid} set to {set}")
+    for teamtask in tabset.teamsource[team_ref-1].tasks:
+        if teamtask.uuid == uuid:
+            teamtask.set = set
+            break
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
     
     
-def team_relic_setslot(uuid, slot):
-    print(uuid)
-    print(slot)
+def team_relic_setslot(team_ref, uuid, slot):
+    print(f"Setting {team_ref} {uuid} slot to {slot}")
+    for teamtask in tabset.teamsource[team_ref-1].tasks:
+        if teamtask.uuid == uuid:
+            teamtask.slot = slot
+            break
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 
-def team_relic_setstat(uuid, stat):
-    print(uuid)
-    print(stat)
+def team_relic_setstat(team_ref, uuid, stat):
+    print(f"Setting {team_ref} {uuid} stat to {stat}")
+    for teamtask in tabset.teamsource[team_ref-1].tasks:
+        if teamtask.uuid == uuid:
+            teamtask.mainstat = stat
+            break
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
     
 
-def team_relic_setsubstat(uuid, index, substat):
-    print(uuid)
-    print(index)
-    print(substat)
+def team_relic_setsubstat(team_ref, uuid, index, substat):
+    print(f"Setting {team_ref} {uuid} substat {index} to {substat}")
+    for teamtask in tabset.teamsource[team_ref-1].tasks:
+        if teamtask.uuid == uuid:
+            teamtask.substats[index] = substat
+            break
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 
-def team_move_up(uuid, character):
-    print(uuid)
-    print(character)
+def team_move_up(team_ref, uuid, char_name):
+    if char_name == tabset.frames_teams[team_ref-1].char1.characterdict["Name"]:
+        tasklist = tabset.frames_teams[team_ref-1].char1tasks
+    elif char_name == tabset.frames_teams[team_ref-1].char2.characterdict["Name"]:
+        tasklist = tabset.frames_teams[team_ref-1].char2tasks
+    elif char_name == tabset.frames_teams[team_ref-1].char3.characterdict["Name"]:
+        tasklist = tabset.frames_teams[team_ref-1].char3tasks
+    elif char_name == tabset.frames_teams[team_ref-1].char4.characterdict["Name"]:
+        tasklist = tabset.frames_teams[team_ref-1].char4tasks
+            
+    for i in range(len(tasklist)):
+        if tasklist[i].uuid == uuid:
+            if i == 0:
+                print("Can't move top item up")
+                return
+            else:
+                pos1 = tasklist[i].pos
+                uuid2 = tasklist[i-1].uuid
+                pos2 = tasklist[i-1].pos
+                break
+    posswapped1 = False
+    posswapped2 = False
+    for teamtask in tabset.teamsource[team_ref-1].tasks:
+        if teamtask.uuid == uuid:
+            teamtask.pos = pos2
+            posswapped1 = True
+        elif teamtask.uuid == uuid2:
+            teamtask.pos = pos1
+            posswapped2 = True
+        if posswapped1 and posswapped2:
+            print(f"Moved {uuid} up")
+            break
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 
-def team_delete_task(uuid):
-    print(uuid)
-
+def team_delete_task(team_ref, uuid):
+    print(f"Deleting task {uuid} in {team_ref}")
+    for i in range(len(tabset.teamsource[team_ref-1].tasks)):
+        if tabset.teamsource[team_ref-1].tasks[i].uuid == uuid:
+            tabset.teamsource[team_ref-1].tasks.pop(i)
+            break
+    data.set_teams(tabset.teamsource)
+    tabset.reload()
 
 
 # ------------- Runtime -------------
