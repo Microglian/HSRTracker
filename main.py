@@ -56,8 +56,121 @@ class Tab():
         self.frame.rowconfigure(15, minsize=50)
 
     
-    def make_summary_tab(self):
-        pass
+    def make_summary_tab(self, frames_teams:list):
+        # Make the header frame for containing cost summary
+        self.frame_header = ttk.Frame(self.frame, width=1196, height=50, borderwidth=2, relief="solid")
+        self.frame_header.grid(column=0, row=0, columnspan=12, rowspan=1, sticky="w")
+        # Header background
+        self.header_image = tk.PhotoImage(file="./images/summaryheader.png")
+        self.header_bg = ttk.Label(self.frame_header, image=self.header_image)
+        self.header_bg.place(x=-4, y=-4)
+        
+        # WB. 5 total, 5 per row, width ~236, height ~50.
+        self.frame_wb = ttk.Frame(self.frame, width=1196, height=100, borderwidth=2, relief="solid")
+        self.frame_wb.grid(column=0, row=1, columnspan=12, rowspan=2, sticky="w")
+
+        self.wb_image = tk.PhotoImage(file="./images/summarywbframe.png")
+        self.wb_bg = ttk.Label(self.frame_wb, image=self.wb_image)
+        self.wb_bg.place(x=-4, y=-4)
+        
+        self.wbpanes = []
+        
+        for key, value in summary.worldbosses.items():
+            self.wbpanes.append(SummaryWBPane(self.frame_wb, frames_teams, key, value))
+        
+        x,y = 0,0
+        for i in range(len(self.wbpanes)):
+            if x > 1000:
+                x = 0
+                y += 50
+            self.wbpanes[i].frame.place(x=x, y=y)
+            x += 239
+        
+        
+        # Cavern, 9 total, 4 per row, width ~296  height ~50.
+        self.frame_cave = ttk.Frame(self.frame, width=1196, height=150, borderwidth=2, relief="solid")
+        self.frame_cave.grid(column=0, row=3, columnspan=12, rowspan=3, sticky="w")
+
+        self.cave_image = tk.PhotoImage(file="./images/summarycaveframe.png")
+        self.cave_bg = ttk.Label(self.frame_cave, image=self.cave_image)
+        self.cave_bg.place(x=-4, y=-4)
+        
+        self.cavepanes = []
+        
+        for key, value in summary.cave.items():
+            self.cavepanes.append(SummaryCavePane(self.frame_cave, frames_teams, key, value))
+        
+        x,y = 0,0
+        for i in range(len(self.cavepanes)):
+            if x > 1000:
+                x = 0
+                y += 50
+            self.cavepanes[i].frame.place(x=x, y=y)
+            x += 299
+        
+        # SU, 8 total, 4 per row, width ~296 height ~50.
+        self.frame_su = ttk.Frame(self.frame, width=1196, height=150, borderwidth=2, relief="solid")
+        self.frame_su.grid(column=0, row=6, columnspan=12, rowspan=3, sticky="w")
+
+        self.su_image = tk.PhotoImage(file="./images/summarysuframe.png")
+        self.su_bg = ttk.Label(self.frame_su, image=self.su_image)
+        self.su_bg.place(x=-4, y=-4)
+        
+        self.supanes = []
+        
+        for key, value in summary.su.items():
+            self.supanes.append(SummarySUPane(self.frame_su, frames_teams, key, value))
+        
+        x,y = 0,0
+        for i in range(len(self.supanes)):
+            if x > 1000:
+                x = 0
+                y += 50
+            self.supanes[i].frame.place(x=x, y=y)
+            x += 299
+        
+        # Trace, 13 total, 5 per row, width ~236, height ~25.
+        self.frame_trace = ttk.Frame(self.frame, width=1196, height=100, borderwidth=2, relief="solid")
+        self.frame_trace.grid(column=0, row=9, columnspan=12, rowspan=2, sticky="w")
+
+        self.trace_image = tk.PhotoImage(file="./images/summarytraceframe.png")
+        self.trace_bg = ttk.Label(self.frame_trace, image=self.trace_image)
+        self.trace_bg.place(x=-4, y=-4)
+        
+        self.tracepanes = []
+        
+        for key, value in summary.traces.items():
+            self.tracepanes.append(SummaryTracePane(self.frame_trace, frames_teams, key, value))
+        
+        x,y = 0,0
+        for i in range(len(self.tracepanes)):
+            if x > 1000:
+                x = 0
+                y += 25
+            self.tracepanes[i].frame.place(x=x, y=y)
+            x += 239
+        
+        # Boss, 18 total, 6 per row, width ~196, height ~25
+        self.frame_boss = ttk.Frame(self.frame, width=1196, height=150, borderwidth=2, relief="solid")
+        self.frame_boss.grid(column=0, row=11, columnspan=12, rowspan=3, sticky="w")
+
+        self.boss_image = tk.PhotoImage(file="./images/summarybossframe.png")
+        self.boss_bg = ttk.Label(self.frame_boss, image=self.boss_image)
+        self.boss_bg.place(x=-4, y=-4)
+        
+        self.bosspanes = []
+        
+        for key, value in summary.bosses.items():
+            self.bosspanes.append(SummaryBossPane(self.frame_boss, frames_teams, key, value))
+            
+        x,y = 0,0
+        for i in range(len(self.bosspanes)):
+            if x > 1000:
+                x = 0
+                y += 25
+            self.bosspanes[i].frame.place(x=x, y=y)
+            x += 199
+        
     
     def make_gacha_tab(self, tasks:list):
         # Make the header frame for containing cost summary
@@ -305,6 +418,460 @@ class Tab():
             y += 4
               
         
+class SummaryWBPane():
+    def __init__(self, master, frames_teams, pane_name, rewards) -> None:
+        self.frame = ttk.Frame(master, width=235, height=46, borderwidth=0, relief="solid")
+        self.bgimage = tk.PhotoImage(file="./images/summarywbpane.png")
+        self.bg = ttk.Label(self.frame, image=self.bgimage)
+        self.bg.place(x=-2 ,y=-2)
+        
+        self.namecanv = tk.Canvas(self.frame, width=160, height=22, bg="#283640", highlightthickness=0)
+        self.namecanv.create_text(1,1, text=pane_name,font=tkFont.Font(size=10), fill="#FFFFFF", anchor="nw")
+        self.namecanv.place(x=50,y=1)
+
+        self.imgcanv = tk.Canvas(self.frame, width=43, height=43, bg="#283640", highlightthickness=0)
+        self.matbgimage = tk.PhotoImage(file=f"./images/inventory/invpurple.png")
+        self.matimage = tk.PhotoImage(file=f"./images/inventory/{mapping.imagemap[rewards]}.png")
+        self.imgcanv.create_image((21,21), image=self.matbgimage)
+        self.imgcanv.create_image((21,21), image=self.matimage)
+        self.imgcanv.place(x=1,y=1)
+        
+        self.total = 0
+        for teamframe in frames_teams:
+            if team.charactermaterials[teamframe.char1.character]["WBMat"] == rewards:
+                for task in teamframe.char1tasks:
+                    if task.tasktype == "Trace":
+                        self.total += task.total[1]
+                    elif task.tasktype == "Ascension":
+                        self.total += 1
+            
+            if team.charactermaterials[teamframe.char2.character]["WBMat"] == rewards:
+                for task in teamframe.char2tasks:
+                    if task.tasktype == "Trace":
+                        self.total += task.total[1]
+                    elif task.tasktype == "Ascension":
+                        self.total += 1
+                    
+            if team.charactermaterials[teamframe.char3.character]["WBMat"] == rewards:
+                for task in teamframe.char3tasks:
+                    if task.tasktype == "Trace":
+                        self.total += task.total[1]
+                    elif task.tasktype == "Ascension":
+                        self.total += 1
+                    
+            if team.charactermaterials[teamframe.char4.character]["WBMat"] == rewards:
+                for task in teamframe.char4tasks:
+                    if task.tasktype == "Trace":
+                        self.total += task.total[1]
+                    elif task.tasktype == "Ascension":
+                        self.total += 1
+        
+        self.totalcanv = tk.Canvas(self.frame, width=160, height=22, bg="#98CCF2", highlightthickness=0)
+        self.totalcanv.create_text(1,1, text=f"x{self.total}",font=tkFont.Font(size=10), anchor="nw")
+        self.totalcanv.place(x=50,y=26)
+    
+    
+class SummaryCavePane():
+    def __init__(self, master, frames_teams, pane_name, rewards) -> None:
+        self.frame = ttk.Frame(master, width=295, height=46, borderwidth=0, relief="solid")
+        self.bgimage = tk.PhotoImage(file="./images/summarysupane.png")
+        self.bg = ttk.Label(self.frame, image=self.bgimage)
+        self.bg.place(x=-2 ,y=-2)
+        
+        self.matbg = tk.PhotoImage(file="./images/inventory/invgold.png")
+        self.mat1canv = tk.Canvas(self.frame, width=42, height=42, bg="#EBF298", highlightthickness=0)
+        self.mat1img = tk.PhotoImage(file=f"./images/inventory/{mapping.imagemap[rewards[0]]}.png")
+        self.mat1canv.create_image((20,21), image=self.matbg)
+        self.mat1canv.create_image((20,21), image=self.mat1img)
+        self.mat1canv.place(x=2,y=2)
+        
+        self.mat2canv = tk.Canvas(self.frame, width=42, height=42, bg="#A9F298", highlightthickness=0)
+        self.mat2img = tk.PhotoImage(file=f"./images/inventory/{mapping.imagemap[rewards[1]]}.png")
+        self.mat2canv.create_image((21,20), image=self.matbg)
+        self.mat2canv.create_image((21,20), image=self.mat2img)
+        self.mat2canv.place(x=251,y=2)
+        
+        self.namecanv = tk.Canvas(self.frame, width=137, height=14, bg="#2B4028", highlightthickness=0)
+        self.namecanv.create_text(68,6, text=pane_name,font=tkFont.Font(size=9), fill="#FFFFFF")
+        self.namecanv.place(x=79,y=16)
+        
+        self.mat1total = 0
+        self.mat2total = 0
+        for teamframe in frames_teams:
+            for task in teamframe.char1tasks:
+                if task.tasktype == "Relic":
+                    if task.set == rewards[0]:
+                        self.mat1total += 1
+                    if task.set == rewards[1]:
+                        self.mat2total += 1
+            for task in teamframe.char2tasks:
+                if task.tasktype == "Relic":
+                    if task.set == rewards[0]:
+                        self.mat1total += 1
+                    if task.set == rewards[1]:
+                        self.mat2total += 1
+            for task in teamframe.char3tasks:
+                if task.tasktype == "Relic":
+                    if task.set == rewards[0]:
+                        self.mat1total += 1
+                    if task.set == rewards[1]:
+                        self.mat2total += 1
+            for task in teamframe.char4tasks:
+                if task.tasktype == "Relic":
+                    if task.set == rewards[0]:
+                        self.mat1total += 1
+                    if task.set == rewards[1]:
+                        self.mat2total += 1
+        
+        self.mat1textcanv1 = tk.Canvas(self.frame, width=20, height=24, bg="#EBF298", highlightthickness=0)
+        self.mat1textcanv1.create_text(2,22, text=self.mat1total,font=tkFont.Font(size=12), anchor='sw')
+        self.mat1textcanv1.place(x=43,y=20)
+        
+        self.mat2textcanv1 = tk.Canvas(self.frame, width=20, height=24, bg="#A9F298", highlightthickness=0)
+        self.mat2textcanv1.create_text(1,1, text=self.mat2total,font=tkFont.Font(size=12), anchor='nw')
+        self.mat2textcanv1.place(x=232,y=2)
+        
+class SummarySUPane():
+    def __init__(self, master, frames_teams, pane_name, rewards) -> None:
+        self.frame = ttk.Frame(master, width=295, height=46, borderwidth=0, relief="solid")
+        self.bgimage = tk.PhotoImage(file="./images/summaryrelicpane.png")
+        self.bg = ttk.Label(self.frame, image=self.bgimage)
+        self.bg.place(x=-2 ,y=-2) 
+        
+        self.matbg = tk.PhotoImage(file="./images/inventory/invgold.png")
+        self.mat1canv = tk.Canvas(self.frame, width=42, height=42, bg="#98BBF2", highlightthickness=0)
+        self.mat1img = tk.PhotoImage(file=f"./images/inventory/{mapping.imagemap[rewards[0]]}.png")
+        self.mat1canv.create_image((20,20), image=self.matbg)
+        self.mat1canv.create_image((20,20), image=self.mat1img)
+        self.mat1canv.place(x=2,y=2)
+        
+        self.mat2canv = tk.Canvas(self.frame, width=42, height=42, bg="#98F2E7", highlightthickness=0)
+        self.mat2img = tk.PhotoImage(file=f"./images/inventory/{mapping.imagemap[rewards[1]]}.png")
+        self.mat2canv.create_image((21,21), image=self.matbg)
+        self.mat2canv.create_image((21,21), image=self.mat2img)
+        self.mat2canv.place(x=251,y=2)
+        
+        self.namecanv = tk.Canvas(self.frame, width=137, height=14, bg="#2B4028", highlightthickness=0)
+        self.namecanv.create_text(68,6, text=f"Simulated Universe {pane_name[3:]}",font=tkFont.Font(size=9), fill="#FFFFFF")
+        self.namecanv.place(x=79,y=16)
+        
+        self.mat1total = 0
+        self.mat2total = 0
+        for teamframe in frames_teams:
+            for task in teamframe.char1tasks:
+                if task.tasktype == "Relic":
+                    if task.set == rewards[0]:
+                        self.mat1total += 1
+                    if task.set == rewards[1]:
+                        self.mat2total += 1
+            for task in teamframe.char2tasks:
+                if task.tasktype == "Relic":
+                    if task.set == rewards[0]:
+                        self.mat1total += 1
+                    if task.set == rewards[1]:
+                        self.mat2total += 1
+            for task in teamframe.char3tasks:
+                if task.tasktype == "Relic":
+                    if task.set == rewards[0]:
+                        self.mat1total += 1
+                    if task.set == rewards[1]:
+                        self.mat2total += 1
+            for task in teamframe.char4tasks:
+                if task.tasktype == "Relic":
+                    if task.set == rewards[0]:
+                        self.mat1total += 1
+                    if task.set == rewards[1]:
+                        self.mat2total += 1
+        
+        self.mat1textcanv1 = tk.Canvas(self.frame, width=20, height=24, bg="#98BBF2", highlightthickness=0)
+        self.mat1textcanv1.create_text(1,1, text=self.mat1total,font=tkFont.Font(size=12), anchor='nw')
+        self.mat1textcanv1.place(x=43,y=2)
+        
+        self.mat2textcanv1 = tk.Canvas(self.frame, width=20, height=24, bg="#98F2E7", highlightthickness=0)
+        self.mat2textcanv1.create_text(1,1, text=self.mat2total,font=tkFont.Font(size=12), anchor='nw')
+        self.mat2textcanv1.place(x=232,y=20)
+ 
+ 
+class SummaryTracePane():
+    def __init__(self, master, frames_teams, pane_name, rewards) -> None:
+        self.frame = ttk.Frame(master, width=235, height=23, borderwidth=0, relief="solid")
+        self.bgimage = tk.PhotoImage(file="./images/summarytracepane.png")
+        self.bg = ttk.Label(self.frame, image=self.bgimage)
+        self.bg.place(x=-2 ,y=-2) 
+        
+        self.namecanv = tk.Canvas(self.frame, width=68, height=21, bg="#2A4028", highlightthickness=0)
+        self.namecanv.create_text(1,3, text=pane_name,font=tkFont.Font(size=8), fill="#FFFFFF", anchor="nw")
+        self.namecanv.place(x=1,y=1)
+        
+        self.total = [0,0,0]
+        for teamframe in frames_teams:
+            if team.charactermaterials[teamframe.char1.character]["TraceMat"] == rewards:
+                for task in teamframe.char1tasks:
+                    if task.tasktype == "TraceBasic":
+                        self.total[0] += task.total[0][0]
+                        self.total[1] += task.total[0][1]
+                        self.total[2] += task.total[0][2]
+                    if task.tasktype == "Trace":
+                        self.total[0] += task.total[2][0]
+                        self.total[1] += task.total[2][1]
+                        self.total[2] += task.total[2][2]
+                    if task.tasktype == "Ascension":
+                        self.total[0] += task.tracecost[0]
+                        self.total[1] += task.tracecost[1]
+                        self.total[2] += task.tracecost[2]
+            if team.weaponmaterials[teamframe.char1.characterdict["Weapon"]]["TraceMat"] == rewards:
+                for task in teamframe.char1tasks:
+                    if task.tasktype == "Weapon":
+                        self.total[0] += task.total[1][0]
+                        self.total[1] += task.total[1][1]
+                        self.total[2] += task.total[1][2]
+            
+            if team.charactermaterials[teamframe.char2.character]["TraceMat"] == rewards:
+                for task in teamframe.char2tasks:
+                    if task.tasktype == "TraceBasic":
+                        self.total[0] += task.total[0][0]
+                        self.total[1] += task.total[0][1]
+                        self.total[2] += task.total[0][2]
+                    if task.tasktype == "Trace":
+                        self.total[0] += task.total[2][0]
+                        self.total[1] += task.total[2][1]
+                        self.total[2] += task.total[2][2]
+                    if task.tasktype == "Ascension":
+                        self.total[0] += task.tracecost[0]
+                        self.total[1] += task.tracecost[1]
+                        self.total[2] += task.tracecost[2]
+            if team.weaponmaterials[teamframe.char2.characterdict["Weapon"]]["TraceMat"] == rewards:
+                for task in teamframe.char2tasks:
+                    if task.tasktype == "Weapon":
+                        self.total[0] += task.total[1][0]
+                        self.total[1] += task.total[1][1]
+                        self.total[2] += task.total[1][2]
+                    
+            if team.charactermaterials[teamframe.char3.character]["TraceMat"] == rewards:
+                for task in teamframe.char3tasks:
+                    if task.tasktype == "TraceBasic":
+                        self.total[0] += task.total[0][0]
+                        self.total[1] += task.total[0][1]
+                        self.total[2] += task.total[0][2]
+                    if task.tasktype == "Trace":
+                        self.total[0] += task.total[2][0]
+                        self.total[1] += task.total[2][1]
+                        self.total[2] += task.total[2][2]
+                    if task.tasktype == "Ascension":
+                        self.total[0] += task.tracecost[0]
+                        self.total[1] += task.tracecost[1]
+                        self.total[2] += task.tracecost[2]
+            if team.weaponmaterials[teamframe.char3.characterdict["Weapon"]]["TraceMat"] == rewards:
+                for task in teamframe.char3tasks:
+                    if task.tasktype == "Weapon":
+                        self.total[0] += task.total[1][0]
+                        self.total[1] += task.total[1][1]
+                        self.total[2] += task.total[1][2]
+                    
+            if team.charactermaterials[teamframe.char4.character]["TraceMat"] == rewards:
+                for task in teamframe.char4tasks:
+                    if task.tasktype == "TraceBasic":
+                        self.total[0] += task.total[0][0]
+                        self.total[1] += task.total[0][1]
+                        self.total[2] += task.total[0][2]
+                    if task.tasktype == "Trace":
+                        self.total[0] += task.total[2][0]
+                        self.total[1] += task.total[2][1]
+                        self.total[2] += task.total[2][2]
+                    if task.tasktype == "Ascension":
+                        self.total[0] += task.tracecost[0]
+                        self.total[1] += task.tracecost[1]
+                        self.total[2] += task.tracecost[2]
+            if team.weaponmaterials[teamframe.char4.characterdict["Weapon"]]["TraceMat"] == rewards:
+                for task in teamframe.char4tasks:
+                    if task.tasktype == "Weapon":
+                        self.total[0] += task.total[1][0]
+                        self.total[1] += task.total[1][1]
+                        self.total[2] += task.total[1][2]
+        
+        self.matcanv = tk.Canvas(self.frame, width=150, height=21, bg="#A1F298", highlightthickness=0)
+        self.matimg1bg = tk.PhotoImage(file=f"./images/inventory/invgreen2.png")
+        self.matimg2bg = tk.PhotoImage(file=f"./images/inventory/invblue2.png")
+        self.matimg3bg = tk.PhotoImage(file=f"./images/inventory/invpurple2.png")
+        self.matimg1 = tk.PhotoImage(file=f"./images/inventory/{mapping.imagemap[mapping.tracemats[rewards][0]]}2.png")
+        self.matimg2 = tk.PhotoImage(file=f"./images/inventory/{mapping.imagemap[mapping.tracemats[rewards][1]]}2.png")
+        self.matimg3 = tk.PhotoImage(file=f"./images/inventory/{mapping.imagemap[mapping.tracemats[rewards][2]]}2.png")
+        self.matcanv.create_image((10,11), image=self.matimg1bg)
+        self.matcanv.create_image((10,11), image=self.matimg1)
+        self.matcanv.create_image((60,11), image=self.matimg2bg)
+        self.matcanv.create_image((60,11), image=self.matimg2)
+        self.matcanv.create_image((110,11), image=self.matimg3bg)
+        self.matcanv.create_image((110,11), image=self.matimg3)
+        self.matcanv.create_text(22,2, text=f"x{self.total[0]}",font=tkFont.Font(size=9), anchor="nw")
+        self.matcanv.create_text(72,2, text=f"x{self.total[1]}",font=tkFont.Font(size=9), anchor="nw")
+        self.matcanv.create_text(122,2, text=f"x{self.total[2]}",font=tkFont.Font(size=9), anchor="nw")
+        self.matcanv.place(x=84,y=1)
+ 
+
+class SummaryBossPane():
+    def __init__(self, master, frames_teams, pane_name, rewards) -> None:
+        self.frame = ttk.Frame(master, width=195, height=23, borderwidth=0, relief="solid")
+        self.bgimage = tk.PhotoImage(file="./images/summarybosspane.png")
+        self.bg = ttk.Label(self.frame, image=self.bgimage)
+        self.bg.place(x=-2 ,y=-2) 
+        
+        self.namecanv = tk.Canvas(self.frame, width=90, height=21, bg="#3E2840", highlightthickness=0)
+        self.namecanv.create_text(1,2, text=pane_name,font=tkFont.Font(size=10), fill="#FFFFFF", anchor="nw")
+        self.namecanv.place(x=24,y=1)
+
+        self.imgcanv = tk.Canvas(self.frame, width=22, height=21, bg="#3E2840", highlightthickness=0)
+        self.matbgimage = tk.PhotoImage(file=f"./images/inventory/invpurple2.png")
+        self.matimage = tk.PhotoImage(file=f"./images/inventory/{mapping.imagemap[rewards]}2.png")
+        self.imgcanv.create_image((10,10), image=self.matbgimage)
+        self.imgcanv.create_image((10,10), image=self.matimage)
+        self.imgcanv.place(x=1,y=1)
+        
+        self.total = 0
+        for teamframe in frames_teams:
+            if team.charactermaterials[teamframe.char1.character]["LevelMat"] == rewards:
+                for task in teamframe.char1tasks:
+                    if task.tasktype == "Level":
+                        self.total += task.total[0]
+            
+            if team.charactermaterials[teamframe.char2.character]["LevelMat"] == rewards:
+                for task in teamframe.char2tasks:
+                    if task.tasktype == "Level":
+                        self.total += task.total[0]
+                    
+            if team.charactermaterials[teamframe.char3.character]["LevelMat"] == rewards:
+                for task in teamframe.char3tasks:
+                    if task.tasktype == "Level":
+                        self.total += task.total[0]
+                    
+            if team.charactermaterials[teamframe.char4.character]["LevelMat"] == rewards:
+                for task in teamframe.char4tasks:
+                    if task.tasktype == "Level":
+                        self.total += task.total[0]
+        
+        self.totaltext = f"x{self.total}"
+        if self.total < 100:
+            self.totaltext = f"  {self.totaltext}"
+        if self.total < 10:
+            self.totaltext = f"  {self.totaltext}"
+        self.totalcanv = tk.Canvas(self.frame, width=34, height=21, bg="#E998F2", highlightthickness=0)
+        self.totalcanv.create_text(1,2, text=self.totaltext,font=tkFont.Font(size=10), anchor="nw")
+        self.totalcanv.place(x=160,y=1)
+
+
+class SummaryCommonPane():
+    def __init__(self, master, frames_teams, pane_name, rewards) -> None:
+        self.frame = ttk.Frame(master, width=235, height=23, borderwidth=0, relief="solid")
+        self.bgimage = tk.PhotoImage(file="./images/summarytracepane.png")
+        self.bg = ttk.Label(self.frame, image=self.bgimage)
+        self.bg.place(x=-2 ,y=-2) 
+        
+        self.namecanv = tk.Canvas(self.frame, width=68, height=21, bg="#2A4028", highlightthickness=0)
+        self.namecanv.create_text(1,3, text=pane_name,font=tkFont.Font(size=8), fill="#FFFFFF", anchor="nw")
+        self.namecanv.place(x=1,y=1)
+        
+        self.total = [0,0,0]
+        for teamframe in frames_teams:
+            if team.charactermaterials[teamframe.char1.character]["TraceMat"] == rewards:
+                for task in teamframe.char1tasks:
+                    if task.tasktype == "TraceBasic":
+                        self.total[0] += task.total[0][0]
+                        self.total[1] += task.total[0][1]
+                        self.total[2] += task.total[0][2]
+                    if task.tasktype == "Trace":
+                        self.total[0] += task.total[2][0]
+                        self.total[1] += task.total[2][1]
+                        self.total[2] += task.total[2][2]
+                    if task.tasktype == "Ascension":
+                        self.total[0] += task.tracecost[0]
+                        self.total[1] += task.tracecost[1]
+                        self.total[2] += task.tracecost[2]
+            if team.weaponmaterials[teamframe.char1.characterdict["Weapon"]]["TraceMat"] == rewards:
+                for task in teamframe.char1tasks:
+                    if task.tasktype == "Weapon":
+                        self.total[0] += task.total[1][0]
+                        self.total[1] += task.total[1][1]
+                        self.total[2] += task.total[1][2]
+            
+            if team.charactermaterials[teamframe.char2.character]["TraceMat"] == rewards:
+                for task in teamframe.char2tasks:
+                    if task.tasktype == "TraceBasic":
+                        self.total[0] += task.total[0][0]
+                        self.total[1] += task.total[0][1]
+                        self.total[2] += task.total[0][2]
+                    if task.tasktype == "Trace":
+                        self.total[0] += task.total[2][0]
+                        self.total[1] += task.total[2][1]
+                        self.total[2] += task.total[2][2]
+                    if task.tasktype == "Ascension":
+                        self.total[0] += task.tracecost[0]
+                        self.total[1] += task.tracecost[1]
+                        self.total[2] += task.tracecost[2]
+            if team.weaponmaterials[teamframe.char2.characterdict["Weapon"]]["TraceMat"] == rewards:
+                for task in teamframe.char2tasks:
+                    if task.tasktype == "Weapon":
+                        self.total[0] += task.total[1][0]
+                        self.total[1] += task.total[1][1]
+                        self.total[2] += task.total[1][2]
+                    
+            if team.charactermaterials[teamframe.char3.character]["TraceMat"] == rewards:
+                for task in teamframe.char3tasks:
+                    if task.tasktype == "TraceBasic":
+                        self.total[0] += task.total[0][0]
+                        self.total[1] += task.total[0][1]
+                        self.total[2] += task.total[0][2]
+                    if task.tasktype == "Trace":
+                        self.total[0] += task.total[2][0]
+                        self.total[1] += task.total[2][1]
+                        self.total[2] += task.total[2][2]
+                    if task.tasktype == "Ascension":
+                        self.total[0] += task.tracecost[0]
+                        self.total[1] += task.tracecost[1]
+                        self.total[2] += task.tracecost[2]
+            if team.weaponmaterials[teamframe.char3.characterdict["Weapon"]]["TraceMat"] == rewards:
+                for task in teamframe.char3tasks:
+                    if task.tasktype == "Weapon":
+                        self.total[0] += task.total[1][0]
+                        self.total[1] += task.total[1][1]
+                        self.total[2] += task.total[1][2]
+                    
+            if team.charactermaterials[teamframe.char4.character]["TraceMat"] == rewards:
+                for task in teamframe.char4tasks:
+                    if task.tasktype == "TraceBasic":
+                        self.total[0] += task.total[0][0]
+                        self.total[1] += task.total[0][1]
+                        self.total[2] += task.total[0][2]
+                    if task.tasktype == "Trace":
+                        self.total[0] += task.total[2][0]
+                        self.total[1] += task.total[2][1]
+                        self.total[2] += task.total[2][2]
+                    if task.tasktype == "Ascension":
+                        self.total[0] += task.tracecost[0]
+                        self.total[1] += task.tracecost[1]
+                        self.total[2] += task.tracecost[2]
+            if team.weaponmaterials[teamframe.char4.characterdict["Weapon"]]["TraceMat"] == rewards:
+                for task in teamframe.char4tasks:
+                    if task.tasktype == "Weapon":
+                        self.total[0] += task.total[1][0]
+                        self.total[1] += task.total[1][1]
+                        self.total[2] += task.total[1][2]
+        
+        self.matcanv = tk.Canvas(self.frame, width=150, height=21, bg="#A1F298", highlightthickness=0)
+        self.matimg1bg = tk.PhotoImage(file=f"./images/inventory/invgreen2.png")
+        self.matimg2bg = tk.PhotoImage(file=f"./images/inventory/invblue2.png")
+        self.matimg3bg = tk.PhotoImage(file=f"./images/inventory/invpurple2.png")
+        self.matimg1 = tk.PhotoImage(file=f"./images/inventory/{mapping.imagemap[mapping.tracemats[rewards][0]]}2.png")
+        self.matimg2 = tk.PhotoImage(file=f"./images/inventory/{mapping.imagemap[mapping.tracemats[rewards][1]]}2.png")
+        self.matimg3 = tk.PhotoImage(file=f"./images/inventory/{mapping.imagemap[mapping.tracemats[rewards][2]]}2.png")
+        self.matcanv.create_image((10,11), image=self.matimg1bg)
+        self.matcanv.create_image((10,11), image=self.matimg1)
+        self.matcanv.create_image((60,11), image=self.matimg2bg)
+        self.matcanv.create_image((60,11), image=self.matimg2)
+        self.matcanv.create_image((110,11), image=self.matimg3bg)
+        self.matcanv.create_image((110,11), image=self.matimg3)
+        self.matcanv.create_text(22,2, text=f"x{self.total[0]}",font=tkFont.Font(size=9), anchor="nw")
+        self.matcanv.create_text(72,2, text=f"x{self.total[1]}",font=tkFont.Font(size=9), anchor="nw")
+        self.matcanv.create_text(122,2, text=f"x{self.total[2]}",font=tkFont.Font(size=9), anchor="nw")
+        self.matcanv.place(x=84,y=1)
 
         
 class TeamColumn():
@@ -463,15 +1030,11 @@ class TeamColumn():
         self.listbg = ttk.Label(self.frame_list, image=self.listimage)
         self.listbg.place(x=-2,y=-2)
         
-        # There is no way of knowing why this doesn't work.
-        self.scrollbar = ttk.Scrollbar(self.listcanvas, orient="vertical", command=self.listcanvas.yview)
-        self.listcanvas['yscrollcommand'] = self.scrollbar.set
-        self.scrollbar.place(x=0,y=0,anchor="e")
-        
         
     def update_new_task_command(self, hackvar):
         self.newtaskcommand = partial(team_add_task, self.team_index, self.character, self.newtaskvar.get())
         self.newtaskbutton.config(command=self.newtaskcommand)
+
 
 class TeamTaskWidget():
     def __init__(self, uuid, pos, master) -> None:
@@ -500,6 +1063,7 @@ class TeamTaskWidget():
 class TeamTaskWidgetLevel(TeamTaskWidget):
     def __init__(self, uuid, master, pos, level) -> None:
         TeamTaskWidget.__init__(self, uuid, pos, master)
+        self.tasktype = "Level"
         self.frameheight = 48
         self.taskframe = ttk.Frame(master.frame_list, width=274, height=self.frameheight, borderwidth=0, relief="solid")
         self.bgimage = tk.PhotoImage(file="./images/leveltask.png")
@@ -567,6 +1131,7 @@ class TeamTaskWidgetLevel(TeamTaskWidget):
 class TeamTaskWidgetWeaponLevel(TeamTaskWidget):
     def __init__(self, uuid, master, pos, level) -> None:
         TeamTaskWidget.__init__(self, uuid, pos, master)
+        self.tasktype = "Weapon"
         self.weapon = master.characterdict['Weapon']
         self.frameheight = 48
         self.taskframe = ttk.Frame(master.frame_list, width=274, height=self.frameheight, borderwidth=0, relief="solid")
@@ -649,6 +1214,7 @@ class TeamTaskWidgetWeaponLevel(TeamTaskWidget):
 class TeamTaskWidgetAscension(TeamTaskWidget):
     def __init__(self, uuid, master, pos, trace) -> None:        
         TeamTaskWidget.__init__(self, uuid, pos, master)
+        self.tasktype = "Ascension"
         self.frameheight = 48
         self.taskframe = ttk.Frame(master.frame_list, width=274, height=self.frameheight, borderwidth=0, relief="solid")
         self.bgimage = tk.PhotoImage(file="./images/ascensiontask.png")
@@ -665,9 +1231,9 @@ class TeamTaskWidgetAscension(TeamTaskWidget):
         
         self.mat_list = [team.charactermaterials[master.character]['WBMat'], mapping.tracemats[team.charactermaterials[master.character]["TraceMat"]]]
         if self.is5star:
-            tracecost = [3,5,8]
+            self.tracecost = [3,5,8]
         else:
-            tracecost = [2,4,6] 
+            self.tracecost = [2,4,6] 
         self.matcanv = tk.Canvas(self.taskframe, width=160, height=42, bg="#C779FF", highlightthickness=0)
         self.matcanv.create_text(1,-1, text=f"{self.mat_list[0]}", font=tkFont.Font(size=8), anchor="nw")
         self.matcanv.create_text(1,9, text=f"{team.charactermaterials[master.character]['TraceMat']}", font=tkFont.Font(size=8), anchor="nw")
@@ -678,7 +1244,7 @@ class TeamTaskWidgetAscension(TeamTaskWidget):
                 self.matcanv.create_image((10,32), image=self.mattrabg)
                 self.mattraimg = tk.PhotoImage(file=f"./images/inventory/{mapping.imagemap[self.mat_list[1][0]]}2.png")
                 self.matcanv.create_image((10,32), image=self.mattraimg)
-                self.matcanv.create_text(31,32, text=f"x{tracecost[0]}")
+                self.matcanv.create_text(31,32, text=f"x{self.tracecost[0]}")
         
                 self.matwbbg = tk.PhotoImage(file=f"./images/inventory/invpurple2.png")
                 self.matcanv.create_image((55,32), image=self.matwbbg)
@@ -691,7 +1257,7 @@ class TeamTaskWidgetAscension(TeamTaskWidget):
                 self.matcanv.create_image((10,32), image=self.mattrabg)
                 self.mattraimg = tk.PhotoImage(file=f"./images/inventory/{mapping.imagemap[self.mat_list[1][1]]}2.png")
                 self.matcanv.create_image((10,32), image=self.mattraimg)
-                self.matcanv.create_text(31,32, text=f"x{tracecost[1]}")
+                self.matcanv.create_text(31,32, text=f"x{self.tracecost[1]}")
         
                 self.matwbbg = tk.PhotoImage(file=f"./images/inventory/invpurple2.png")
                 self.matcanv.create_image((55,32), image=self.matwbbg)
@@ -710,7 +1276,7 @@ class TeamTaskWidgetAscension(TeamTaskWidget):
                 self.matcanv.create_image((10,32), image=self.mattrabg)
                 self.mattraimg = tk.PhotoImage(file=f"./images/inventory/{mapping.imagemap[self.mat_list[1][2]]}2.png")
                 self.matcanv.create_image((10,32), image=self.mattraimg)
-                self.matcanv.create_text(31,32, text=f"x{tracecost[2]}")
+                self.matcanv.create_text(31,32, text=f"x{self.tracecost[2]}")
         
                 self.matwbbg = tk.PhotoImage(file=f"./images/inventory/invpurple2.png")
                 self.matcanv.create_image((55,32), image=self.matwbbg)
@@ -732,6 +1298,7 @@ class TeamTaskWidgetAscension(TeamTaskWidget):
 class TeamTaskWidgetTrace(TeamTaskWidget):
     def __init__(self, uuid, master, pos, trace, target) -> None:        
         TeamTaskWidget.__init__(self, uuid, pos, master)
+        self.tasktype = "Trace"
         self.frameheight = 72
         self.taskframe = ttk.Frame(master.frame_list, width=274, height=self.frameheight, borderwidth=0, relief="solid")
         self.bgimage = tk.PhotoImage(file="./images/tracetask.png")
@@ -748,6 +1315,7 @@ class TeamTaskWidgetTrace(TeamTaskWidget):
         
         self.targettext = tk.IntVar(self.taskframe, target)
         if trace == "Basic":
+            self.taskttype = "TraceBasic"
             self.targetoptions = [6,5,4,3,2]
         else:
             self.targetoptions = [10,9,8,7,6,5,4,3,2]
@@ -884,12 +1452,14 @@ class TeamTaskWidgetTrace(TeamTaskWidget):
 class TeamTaskWidgetRelic(TeamTaskWidget):
     def __init__(self, uuid, master, pos, set, slot, mainstat, substats:list) -> None:        
         TeamTaskWidget.__init__(self, uuid, pos, master)
+        self.tasktype = "Relic"
         self.frameheight = 96
         self.taskframe = ttk.Frame(master.frame_list, width=274, height=self.frameheight, borderwidth=0, relief="solid")
         self.bgimage = tk.PhotoImage(file="./images/relictask.png")
         self.bg = ttk.Label(self.taskframe, image=self.bgimage)
         self.bg.place(x=-2 ,y=-2)
         
+        self.set = set
         self.settext = tk.StringVar(self.taskframe, set)
         self.setwidget = tk.OptionMenu(self.taskframe, self.settext, self.settext, *team.relicsets, command=partial(team_relic_setset, self.master.team_index, self.uuid))
         self.setwidget['menu'].delete(0)
@@ -1003,7 +1573,6 @@ class GachaTaskWidget():
         self.buttonDelete.place(x=335,y=57,width=30,height=30)
         
 
-
 class Tabset():
     def __init__(self) -> None:
         self.notebook = ttk.Notebook(root)
@@ -1066,10 +1635,9 @@ class Tabset():
     def show(self):
         self.notebook.pack()
         
-        # Show Summary tab
+        # Add Summary tab
         self.frame_summary.frame.place(x=0,y=0)
         self.notebook.add(self.frame_summary.frame, text="Summary")
-        
         
         # Show each teams tab
         for i in range(len(self.frames_teams)):
@@ -1077,11 +1645,13 @@ class Tabset():
             self.notebook.add(self.frames_teams[i].frame, text=f"Team {i+1}")
             self.frames_teams[i].make_team_tab(self.teams[i])
         
-        
         # Show Gacha tab
         self.frame_gacha.frame.place(x=0,y=0)
         self.notebook.add(self.frame_gacha.frame, text="Gacha")
         self.frame_gacha.make_gacha_tab(self.gacha)
+        
+        # Make Summary tab
+        self.frame_summary.make_summary_tab(self.frames_teams)
         
         
 tabset = Tabset()
@@ -1552,8 +2122,6 @@ def team_delete_task(team_ref, uuid):
 
 
 tabset.reload()
-# tabset.reload()
-# tabset.reload()
 root.mainloop()
 
 #--------------------- Testing --------------------------

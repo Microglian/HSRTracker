@@ -91,8 +91,8 @@ def get_teams() -> list:
                     task_substats = []
                     for i in range(7,len(task_dets)):
                         task_substats.append(task_dets[i])
-                        if task_substats[-1][-2:] == "\n":
-                            task_substats[-1] = task_substats[:-2]
+                    if len(task_substats) > 0:
+                        task_substats[-1] = task_substats[-1][:-1]        
                     teams[-1].tasks.append(team.TeamTaskRelic(task_dets[1], task_dets[2], int(task_dets[3]), task_dets[4], task_dets[5], task_dets[6], task_substats))
             
     return teams

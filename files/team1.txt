@@ -1,9 +1,18 @@
-Clara,50,Something Irreplacable,30,1,1,0,3,1,7,6
-Bailu,60,Brighter Than the Sun,80,1,0,1,4,9,2,9
+Clara,50,Something Irreplacable,30,1,1,0,3,5,7,6
+Acheron,60,Brighter Than the Sun,80,1,0,1,4,9,2,9
 Bronya,30,I Shall Be My Own Sword,40,1,1,1,3,3,3,3
 Topaz,80,Incessant Rain,20,0,0,1,2,6,4,10
-Level,Clara,team00000057,1,70
+Level,Acheron,team00000057,1,70
 WeaponLevel,Clara,team00000058,2,80
 AscensionTrace,Clara,team00000059,3,A4
 LevelledTrace,Clara,team00000061,6,Ult,8
 Relic,Clara,team00000062,5,Glacial Forest,Hand,Atk,Atk%,EHR%,Spd,CD%
+Level,Acheron,team00000067,1,80
+Level,Clara,team00000068,7,80
+Level,Clara,team00000069,8,80
+Relic,Clara,team00000070,9,Wild Wheat,Head,HP
+
+Relic,Clara,team00000071,10,Wild Wheat,Head,HP
+
+Relic,Clara,team00000072,11,Wild Wheat,Head,HP
+WeaponLevel,Clara,team00000073,12,80
