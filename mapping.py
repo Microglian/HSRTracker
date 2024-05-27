@@ -209,11 +209,11 @@ imagemap = {
     "Sigonia": "relsigon",
     "Izumo Gensei": "relizumo",
     "Duran Dynasty": "relduran",
-    "Kalpagni Lantern": "relkalpa"
+    "Kalpagni Lantern": "relkalpa",
 }
 
 commonmats = {
-    "": ["","",""],
+    "": ["", "", ""],
     "Core": ["Extinguished Core", "Glimmering Core", "Squirming Core"],
     "Thief": ["Thief's Instinct", "Usurper's Scheme", "Conqueror's Will"],
     "Silvermane": ["Silvermane Badge", "Silvermane Insignia", "Silvermane Medal"],
@@ -221,16 +221,24 @@ commonmats = {
     "Immortal": ["Immortal Scionette", "Immortal Aeroblossom", "Immortal Lumintwig"],
     "Artifex": ["Artifex's Module", "Artifex's Cogwheel", "Artifex's Gyreheart"],
     "Dream": ["Dream Collection Component", "Dream Flow Valve", "Dream Making Engine"],
-    "Thought": ["Tatters of Thought", "Fragments of Impression", "Shards of Desires"]
+    "Thought": ["Tatters of Thought", "Fragments of Impression", "Shards of Desires"],
 }
 
 tracemats = {
-    "": ["","",""],
+    "": ["", "", ""],
     "Blade": ["Shattered Blade", "Lifeless Blade", "Worldbreaker Blade"],
-    "Arrow": ["Arrow of the Beast Hunter", "Arrow of the Demon Slayer", "Arrow of the Starchaser"],
+    "Arrow": [
+        "Arrow of the Beast Hunter",
+        "Arrow of the Demon Slayer",
+        "Arrow of the Starchaser",
+    ],
     "Key": ["Key of Inspiration", "Key of Knowledge", "Key of Wisdom"],
     "Endurance": ["Endurance of Bronze", "Oath of Steel", "Safeguard of Amber"],
-    "Obsidian": ["Obsidian of Dread", "Obsidian of Desolation", "Obsidian of Obsession"],
+    "Obsidian": [
+        "Obsidian of Dread",
+        "Obsidian of Desolation",
+        "Obsidian of Obsession",
+    ],
     "Tune": ["Harmonic Tune", "Ancestral Hymn", "Stellaris Symphony"],
     "Seed": ["Seed of Abundance", "Sprout of Life", "Flower of Eternity"],
     "Teeth": ["Borisin Teeth", "Lupitoxin Sawteeth", "Moon Madness Fang"],
@@ -239,5 +247,5 @@ tracemats = {
     "Stardust": ["Scattered Stardust", "Crystal Meteorites", "Divine Amber"],
     "Fire": ["Fiery Spirit", "Starfire Essence", "Heaven Incinerator"],
     "Note": ["Firmament Note", "Celestial Section", "Heavenly Melody"],
-    "Alien": ["Alien Tree Seed", "Nourishing Honey", "Myriad Fruit"]
+    "Alien": ["Alien Tree Seed", "Nourishing Honey", "Myriad Fruit"],
 }

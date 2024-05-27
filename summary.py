@@ -26,7 +26,7 @@ bosses = {
     "Nectar": "Dream Fridge",
     "Roast": "Dream Flamer",
     "Duty": "IPC Work Permit",
-    "Ire": "Raging Heart"
+    "Ire": "Raging Heart",
 }
 
 # Trace Mats, format "Calyx": "TraceType"
@@ -43,7 +43,7 @@ traces = {
     "The Reverie": "Note",
     "Great Mine": "Obsidian",
     "Commission": "Fire",
-    "Rivet Town": "Key"
+    "Rivet Town": "Key",
 }
 
 # SU relics, format: "SU X": [""]
@@ -54,8 +54,8 @@ su = {
     "SU 6": ["Belobog of Architects", "Inert Salsotto"],
     "SU 7": ["Rutilant Arena", "Broken Keel"],
     "SU 8": ["Firmament Frontline", "Penacony"],
-    "SU 9": ["Sigonia","Izumo Gensei"],
-    "SU 10": ["Duran Dynasty", "Kalpagni Lantern"]
+    "SU 9": ["Sigonia", "Izumo Gensei"],
+    "SU 10": ["Duran Dynasty", "Kalpagni Lantern"],
 }
 
 # Cave relics, format: "Cavename": [""]
@@ -68,5 +68,5 @@ cave = {
     "Elixir Seekers": ["Longevous Disciple", "Hackerspace"],
     "Darkness": ["Grand Duke", "Deep Confinement"],
     "Dreamdive": ["Dead Waters", "Dream Machinations"],
-    "Jabbing Punch": ["Streetwise Boxing", "Shooting Meteor"]
+    "Jabbing Punch": ["Streetwise Boxing", "Shooting Meteor"],
 }

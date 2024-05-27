@@ -1,25 +1,26 @@
-'''
+"""
 Gacha tab has a header and three columns based on priority:
 High     Medium      Low
 
 Each task within a column is something to pull.
 A task is either a Character task or a Lightcone task.
-'''
+"""
 
-class Gacha():
+
+class Gacha:
     def __init__(self) -> None:
         self.tasks = []
-        
-        
-class GachaTask():
+
+
+class GachaTask:
     def __init__(self, uuid, priority, pos, objectname, target) -> None:
         self.uuid = uuid
         self.priority = priority
         self.pos = pos
         self.objectname = objectname
         self.target = target
-        
-        
+
+
 objectnames = [
     "Acheron",
     "Argenti",
@@ -83,15 +84,7 @@ objectnames = [
     "Where Should Dreams Rest",
     "Yet Hope Is Priceless",
     "Sailing Towards a Second Life",
-    "Flowing Nightglow"
-]        
-
-targets = [
-    "E0",
-    "E1",
-    "E2",
-    "E3",
-    "E4",
-    "E5",
-    "E6"
+    "Flowing Nightglow",
 ]
+
+targets = ["E0", "E1", "E2", "E3", "E4", "E5", "E6"]

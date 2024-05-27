@@ -1,15 +1,24 @@
 import mapping
 
-class Team():
-    def __init__(self, team_index:int, character1:dict, character2:dict, character3:dict, character4:dict) -> None:
+
+class Team:
+    def __init__(
+        self,
+        team_index: int,
+        character1: dict,
+        character2: dict,
+        character3: dict,
+        character4: dict,
+    ) -> None:
         self.team_index = team_index
         self.character1 = character1
         self.character2 = character2
         self.character3 = character3
         self.character4 = character4
         self.tasks = []
-    
-class TeamTask():
+
+
+class TeamTask:
     def __init__(self, character, uuid, pos, tasktype) -> None:
         self.character = character
         self.uuid = uuid
@@ -33,7 +42,7 @@ class TeamTaskAscensionTrace(TeamTask):
     def __init__(self, character, uuid, pos, trace) -> None:
         TeamTask.__init__(self, character, uuid, pos, "AscensionTrace")
         self.trace = trace
-        
+
 
 class TeamTaskLevelledTrace(TeamTask):
     def __init__(self, character, uuid, pos, trace, target) -> None:
@@ -43,7 +52,9 @@ class TeamTaskLevelledTrace(TeamTask):
 
 
 class TeamTaskRelic(TeamTask):
-    def __init__(self, character, uuid, pos, set, slot, mainstat, substats:list=[]) -> None:
+    def __init__(
+        self, character, uuid, pos, set, slot, mainstat, substats: list = []
+    ) -> None:
         TeamTask.__init__(self, character, uuid, pos, "Relic")
         self.set = set
         self.slot = slot
@@ -51,6 +62,7 @@ class TeamTaskRelic(TeamTask):
         self.substats = substats
         while len(self.substats) < 4:
             self.substats.append("")
+
 
 characternames = [
     "Acheron",
@@ -102,7 +114,7 @@ characternames = [
     "Sushang",
     "Tingyun",
     "Xueyi",
-    "Yukong"
+    "Yukong",
 ]
 
 weaponnames = [
@@ -188,60 +200,310 @@ weaponnames = [
     "We are Wildfire",
     "We Will Meet Again",
     "What is Real?",
-    "Walk Time"
+    "Walk Time",
 ]
 
 charactermaterials = {
-    "Acheron": {"LevelMat": "Lightning Staff", "CommonMat": "Dream", "TraceMat": "Fire", "WBMat": "Past Evils"},
-    "Argenti": {"LevelMat": "Netherworld Token", "CommonMat": "Core", "TraceMat": "Key", "WBMat": "Regret Ochema"},
-    "Aventurine": {"LevelMat": "Suppressing Edict", "CommonMat": "Thought", "TraceMat": "Stardust", "WBMat": "Past Evils"},
-    "Bailu": {"LevelMat": "Lightning Crown", "CommonMat": "Core", "TraceMat": "Seed", "WBMat": "Guardian Lament"},
-    "Black Swan": {"LevelMat": "Ascendant Debris", "CommonMat": "Cpre", "TraceMat": "Fire", "WBMat": "Past Evils"},
-    "Blade": {"LevelMat": "Ascendant Debris", "CommonMat": "Immortal", "TraceMat": "Blade", "WBMat": "Regret Ochema"},
-    "Boothill": {"LevelMat": "IPC Work Permit", "CommonMat": "Thought", "TraceMat": "Bullet", "WBMat": "Lost Echo"},
-    "Bronya": {"LevelMat": "Storm Eye", "CommonMat": "Silvermane", "TraceMat": "Tune", "WBMat": "Guardian Lament"},
-    "Clara": {"LevelMat": "Teeth of Iron Wolf", "CommonMat": "Ancient", "TraceMat": "Blade", "WBMat": "Guardian Lament"},
-    "Dan Heng IL": {"LevelMat": "Suppressing Edict", "CommonMat": "Immortal", "TraceMat": "Blade", "WBMat": "Regret Ochema"},
-    "Dr Ratio": {"LevelMat": "Suppressing Edict", "CommonMat": "Thief", "TraceMat": "Arrow", "WBMat": "Past Evils"},
-    "Firefly": {"LevelMat": "Raging Heart", "CommonMat": "Thought", "TraceMat": "Teeth", "WBMat": "Lost Echo"},
-    "Fu Xuan": {"LevelMat": "Nail of the Ape", "CommonMat": "Artifex", "TraceMat": "Endurance", "WBMat": "Regret Ochema"},
-    "Gepard": {"LevelMat": "Horn of Snow", "CommonMat": "Silvermane", "TraceMat": "Endurance", "WBMat": "Guardian Lament"},
-    "Himeko": {"LevelMat": "Endotherm Chitin", "CommonMat": "Core", "TraceMat": "Key", "WBMat": "Destroyer Road"},
-    "Huohuo": {"LevelMat": "Ascendant Debris", "CommonMat": "Immortal", "TraceMat": "Seed", "WBMat": "Regret Ochema"},
-    "Jade": {"LevelMat": "Dream Flamer", "CommonMat": "Dream", "TraceMat": "Sketch", "WBMat": "Lost Echo"},
-    "Jing Yuan": {"LevelMat": "Lightning Staff", "CommonMat": "Immortal", "TraceMat": "Key", "WBMat": "Destroyer Road"},
-    "Jingliu": {"LevelMat": "Gelid Chitin", "CommonMat": "Immortal", "TraceMat": "Blade", "WBMat": "Regret Ochema"},
-    "Kafka": {"LevelMat": "Lightning Staff", "CommonMat": "Thief", "TraceMat": "Obsidian", "WBMat": "Regret Ochema"},
-    "Luocha": {"LevelMat": "Golden Crown", "CommonMat": "Artifex", "TraceMat": "Seed", "WBMat": "Guardian Lament"},
-    "Robin": {"LevelMat": "IPC Work Permit", "CommonMat": "Dream", "TraceMat": "Note", "WBMat": "Past Evils"},
-    "Ruan Mei": {"LevelMat": "Gelid Chitin", "CommonMat": "Immortal", "TraceMat": "Tune", "WBMat": "Past Evils"},
-    "Seele": {"LevelMat": "Void Cast Iron", "CommonMat": "Thief", "TraceMat": "Arrow", "WBMat": "Guardian Lament"},
-    "Silver Wolf": {"LevelMat": "Void Cast Iron", "CommonMat": "Ancient", "TraceMat": "Obsidian", "WBMat": "Destroyer Road"},
-    "Sparkle": {"LevelMat": "Dream Flamer", "CommonMat": "Thought", "TraceMat": "Note", "WBMat": "Past Evils"},
-    "Topaz": {"LevelMat": "Searing Steel", "CommonMat": "Silvermane", "TraceMat": "Arrow", "WBMat": "Regret Ochema"},
-    "Welt": {"LevelMat": "Golden Crown", "CommonMat": "Silvermane", "TraceMat": "Obsidian", "WBMat": "Destroyer Road"},
-    "Yanqing": {"LevelMat": "Gelid Chitin", "CommonMat": "Thief", "TraceMat": "Arrow", "WBMat": "Guardian Lament"},
-    "Arlan": {"LevelMat": "Lightning Crown", "CommonMat": "Core", "TraceMat": "Blade", "WBMat": "Destroyer Road"},
-    "Asta": {"LevelMat": "Endotherm Chitin", "CommonMat": "Silvermane", "TraceMat": "Tune", "WBMat": "Destroyer Road"},
-    "Dan Heng": {"LevelMat": "Storm Eye", "CommonMat": "Core", "TraceMat": "Arrow", "WBMat": "Destroyer Road"},
-    "Gallagher": {"LevelMat": "Raging Heart", "CommonMat": "Dream", "TraceMat": "Alien", "WBMat": "Past Evils"},
-    "Guinaifen": {"LevelMat": "Searing Steel", "CommonMat": "Artifex", "TraceMat": "Obsidian", "WBMat": "Regret Ochema"},
-    "Hanya": {"LevelMat": "Netherworld Token", "CommonMat": "Artifex", "TraceMat": "Tune", "WBMat": "Regret Ochema"},
-    "Herta": {"LevelMat": "Horn of Snow", "CommonMat": "Core", "TraceMat": "Key", "WBMat": "Destroyer Road"},
-    "Hook": {"LevelMat": "Endotherm Chitin", "CommonMat": "Ancient", "TraceMat": "Blade", "WBMat": "Guardian Lament"},
-    "Luka": {"LevelMat": "Teeth of Iron Wolf", "CommonMat": "Ancient", "TraceMat": "Obsidian", "WBMat": "Regret Ochema"},
-    "Lynx": {"LevelMat": "Nail of the Ape", "CommonMat": "Core", "TraceMat": "Seed", "WBMat": "Regret Ochema"},
-    "March 7th": {"LevelMat": "Horn of Snow", "CommonMat": "Thief", "TraceMat": "Endurance", "WBMat": "Destroyer Road"},
-    "Misha": {"LevelMat": "Dream Fridge", "CommonMat": "Dream", "TraceMat": "Teeth", "WBMat": "Past Evils"},
-    "Natasha": {"LevelMat": "Teeth of Iron Wolf", "CommonMat": "Ancient", "TraceMat": "Seed", "WBMat": "Guardian Lament"},
-    "Pela": {"LevelMat": "Horn of Snow", "CommonMat": "Core", "TraceMat": "Obsidian", "WBMat": "Guardian Lament"},
-    "Qingque": {"LevelMat": "Void Cast Iron", "CommonMat": "Thief", "TraceMat": "Key", "WBMat": "Guardian Lament"},
-    "Sampo": {"LevelMat": "Storm Eye", "CommonMat": "Ancient", "TraceMat": "Obsidian", "WBMat": "Guardian Lament"},
-    "Serval": {"LevelMat": "Lightning Crown", "CommonMat": "Silvermane", "TraceMat": "Key", "WBMat": "Guardian Lament"},
-    "Sushang": {"LevelMat": "Teeth of Iron Wolf", "CommonMat": "Artifex", "TraceMat": "Arrow", "WBMat": "Guardian Lament"},
-    "Tingyun": {"LevelMat": "Lightning Crown", "CommonMat": "Immortal", "TraceMat": "Tune", "WBMat": "Destroyer Road"},
-    "Xueyi": {"LevelMat": "Nail of the Ape", "CommonMat": "Core", "TraceMat": "Blade", "WBMat": "Past Evils"},
-    "Yukong": {"LevelMat": "Golden Crown", "CommonMat": "Artifex", "TraceMat": "Tune", "WBMat": "Destroyer Road"}
+    "Acheron": {
+        "LevelMat": "Lightning Staff",
+        "CommonMat": "Dream",
+        "TraceMat": "Fire",
+        "WBMat": "Past Evils",
+    },
+    "Argenti": {
+        "LevelMat": "Netherworld Token",
+        "CommonMat": "Core",
+        "TraceMat": "Key",
+        "WBMat": "Regret Ochema",
+    },
+    "Aventurine": {
+        "LevelMat": "Suppressing Edict",
+        "CommonMat": "Thought",
+        "TraceMat": "Stardust",
+        "WBMat": "Past Evils",
+    },
+    "Bailu": {
+        "LevelMat": "Lightning Crown",
+        "CommonMat": "Core",
+        "TraceMat": "Seed",
+        "WBMat": "Guardian Lament",
+    },
+    "Black Swan": {
+        "LevelMat": "Ascendant Debris",
+        "CommonMat": "Cpre",
+        "TraceMat": "Fire",
+        "WBMat": "Past Evils",
+    },
+    "Blade": {
+        "LevelMat": "Ascendant Debris",
+        "CommonMat": "Immortal",
+        "TraceMat": "Blade",
+        "WBMat": "Regret Ochema",
+    },
+    "Boothill": {
+        "LevelMat": "IPC Work Permit",
+        "CommonMat": "Thought",
+        "TraceMat": "Bullet",
+        "WBMat": "Lost Echo",
+    },
+    "Bronya": {
+        "LevelMat": "Storm Eye",
+        "CommonMat": "Silvermane",
+        "TraceMat": "Tune",
+        "WBMat": "Guardian Lament",
+    },
+    "Clara": {
+        "LevelMat": "Teeth of Iron Wolf",
+        "CommonMat": "Ancient",
+        "TraceMat": "Blade",
+        "WBMat": "Guardian Lament",
+    },
+    "Dan Heng IL": {
+        "LevelMat": "Suppressing Edict",
+        "CommonMat": "Immortal",
+        "TraceMat": "Blade",
+        "WBMat": "Regret Ochema",
+    },
+    "Dr Ratio": {
+        "LevelMat": "Suppressing Edict",
+        "CommonMat": "Thief",
+        "TraceMat": "Arrow",
+        "WBMat": "Past Evils",
+    },
+    "Firefly": {
+        "LevelMat": "Raging Heart",
+        "CommonMat": "Thought",
+        "TraceMat": "Teeth",
+        "WBMat": "Lost Echo",
+    },
+    "Fu Xuan": {
+        "LevelMat": "Nail of the Ape",
+        "CommonMat": "Artifex",
+        "TraceMat": "Endurance",
+        "WBMat": "Regret Ochema",
+    },
+    "Gepard": {
+        "LevelMat": "Horn of Snow",
+        "CommonMat": "Silvermane",
+        "TraceMat": "Endurance",
+        "WBMat": "Guardian Lament",
+    },
+    "Himeko": {
+        "LevelMat": "Endotherm Chitin",
+        "CommonMat": "Core",
+        "TraceMat": "Key",
+        "WBMat": "Destroyer Road",
+    },
+    "Huohuo": {
+        "LevelMat": "Ascendant Debris",
+        "CommonMat": "Immortal",
+        "TraceMat": "Seed",
+        "WBMat": "Regret Ochema",
+    },
+    "Jade": {
+        "LevelMat": "Dream Flamer",
+        "CommonMat": "Dream",
+        "TraceMat": "Sketch",
+        "WBMat": "Lost Echo",
+    },
+    "Jing Yuan": {
+        "LevelMat": "Lightning Staff",
+        "CommonMat": "Immortal",
+        "TraceMat": "Key",
+        "WBMat": "Destroyer Road",
+    },
+    "Jingliu": {
+        "LevelMat": "Gelid Chitin",
+        "CommonMat": "Immortal",
+        "TraceMat": "Blade",
+        "WBMat": "Regret Ochema",
+    },
+    "Kafka": {
+        "LevelMat": "Lightning Staff",
+        "CommonMat": "Thief",
+        "TraceMat": "Obsidian",
+        "WBMat": "Regret Ochema",
+    },
+    "Luocha": {
+        "LevelMat": "Golden Crown",
+        "CommonMat": "Artifex",
+        "TraceMat": "Seed",
+        "WBMat": "Guardian Lament",
+    },
+    "Robin": {
+        "LevelMat": "IPC Work Permit",
+        "CommonMat": "Dream",
+        "TraceMat": "Note",
+        "WBMat": "Past Evils",
+    },
+    "Ruan Mei": {
+        "LevelMat": "Gelid Chitin",
+        "CommonMat": "Immortal",
+        "TraceMat": "Tune",
+        "WBMat": "Past Evils",
+    },
+    "Seele": {
+        "LevelMat": "Void Cast Iron",
+        "CommonMat": "Thief",
+        "TraceMat": "Arrow",
+        "WBMat": "Guardian Lament",
+    },
+    "Silver Wolf": {
+        "LevelMat": "Void Cast Iron",
+        "CommonMat": "Ancient",
+        "TraceMat": "Obsidian",
+        "WBMat": "Destroyer Road",
+    },
+    "Sparkle": {
+        "LevelMat": "Dream Flamer",
+        "CommonMat": "Thought",
+        "TraceMat": "Note",
+        "WBMat": "Past Evils",
+    },
+    "Topaz": {
+        "LevelMat": "Searing Steel",
+        "CommonMat": "Silvermane",
+        "TraceMat": "Arrow",
+        "WBMat": "Regret Ochema",
+    },
+    "Welt": {
+        "LevelMat": "Golden Crown",
+        "CommonMat": "Silvermane",
+        "TraceMat": "Obsidian",
+        "WBMat": "Destroyer Road",
+    },
+    "Yanqing": {
+        "LevelMat": "Gelid Chitin",
+        "CommonMat": "Thief",
+        "TraceMat": "Arrow",
+        "WBMat": "Guardian Lament",
+    },
+    "Arlan": {
+        "LevelMat": "Lightning Crown",
+        "CommonMat": "Core",
+        "TraceMat": "Blade",
+        "WBMat": "Destroyer Road",
+    },
+    "Asta": {
+        "LevelMat": "Endotherm Chitin",
+        "CommonMat": "Silvermane",
+        "TraceMat": "Tune",
+        "WBMat": "Destroyer Road",
+    },
+    "Dan Heng": {
+        "LevelMat": "Storm Eye",
+        "CommonMat": "Core",
+        "TraceMat": "Arrow",
+        "WBMat": "Destroyer Road",
+    },
+    "Gallagher": {
+        "LevelMat": "Raging Heart",
+        "CommonMat": "Dream",
+        "TraceMat": "Alien",
+        "WBMat": "Past Evils",
+    },
+    "Guinaifen": {
+        "LevelMat": "Searing Steel",
+        "CommonMat": "Artifex",
+        "TraceMat": "Obsidian",
+        "WBMat": "Regret Ochema",
+    },
+    "Hanya": {
+        "LevelMat": "Netherworld Token",
+        "CommonMat": "Artifex",
+        "TraceMat": "Tune",
+        "WBMat": "Regret Ochema",
+    },
+    "Herta": {
+        "LevelMat": "Horn of Snow",
+        "CommonMat": "Core",
+        "TraceMat": "Key",
+        "WBMat": "Destroyer Road",
+    },
+    "Hook": {
+        "LevelMat": "Endotherm Chitin",
+        "CommonMat": "Ancient",
+        "TraceMat": "Blade",
+        "WBMat": "Guardian Lament",
+    },
+    "Luka": {
+        "LevelMat": "Teeth of Iron Wolf",
+        "CommonMat": "Ancient",
+        "TraceMat": "Obsidian",
+        "WBMat": "Regret Ochema",
+    },
+    "Lynx": {
+        "LevelMat": "Nail of the Ape",
+        "CommonMat": "Core",
+        "TraceMat": "Seed",
+        "WBMat": "Regret Ochema",
+    },
+    "March 7th": {
+        "LevelMat": "Horn of Snow",
+        "CommonMat": "Thief",
+        "TraceMat": "Endurance",
+        "WBMat": "Destroyer Road",
+    },
+    "Misha": {
+        "LevelMat": "Dream Fridge",
+        "CommonMat": "Dream",
+        "TraceMat": "Teeth",
+        "WBMat": "Past Evils",
+    },
+    "Natasha": {
+        "LevelMat": "Teeth of Iron Wolf",
+        "CommonMat": "Ancient",
+        "TraceMat": "Seed",
+        "WBMat": "Guardian Lament",
+    },
+    "Pela": {
+        "LevelMat": "Horn of Snow",
+        "CommonMat": "Core",
+        "TraceMat": "Obsidian",
+        "WBMat": "Guardian Lament",
+    },
+    "Qingque": {
+        "LevelMat": "Void Cast Iron",
+        "CommonMat": "Thief",
+        "TraceMat": "Key",
+        "WBMat": "Guardian Lament",
+    },
+    "Sampo": {
+        "LevelMat": "Storm Eye",
+        "CommonMat": "Ancient",
+        "TraceMat": "Obsidian",
+        "WBMat": "Guardian Lament",
+    },
+    "Serval": {
+        "LevelMat": "Lightning Crown",
+        "CommonMat": "Silvermane",
+        "TraceMat": "Key",
+        "WBMat": "Guardian Lament",
+    },
+    "Sushang": {
+        "LevelMat": "Teeth of Iron Wolf",
+        "CommonMat": "Artifex",
+        "TraceMat": "Arrow",
+        "WBMat": "Guardian Lament",
+    },
+    "Tingyun": {
+        "LevelMat": "Lightning Crown",
+        "CommonMat": "Immortal",
+        "TraceMat": "Tune",
+        "WBMat": "Destroyer Road",
+    },
+    "Xueyi": {
+        "LevelMat": "Nail of the Ape",
+        "CommonMat": "Core",
+        "TraceMat": "Blade",
+        "WBMat": "Past Evils",
+    },
+    "Yukong": {
+        "LevelMat": "Golden Crown",
+        "CommonMat": "Artifex",
+        "TraceMat": "Tune",
+        "WBMat": "Destroyer Road",
+    },
 }
 
 weaponmaterials = {
@@ -335,82 +597,82 @@ weaponmaterials = {
 
 # wbmat, tracemat[green,blue,purple], commonmat[green,blue,purple]
 basicmaterials5 = {
-    2: [[3,0,0],[6,0,0]],
-    3: [[0,3,0],[0,3,0]],
-    4: [[0,5,0],[0,4,0]],
-    5: [[0,0,3],[0,0,3]],
-    6: [[0,0,8],[0,0,4]]
+    2: [[3, 0, 0], [6, 0, 0]],
+    3: [[0, 3, 0], [0, 3, 0]],
+    4: [[0, 5, 0], [0, 4, 0]],
+    5: [[0, 0, 3], [0, 0, 3]],
+    6: [[0, 0, 8], [0, 0, 4]],
 }
 
 basicmaterials4 = {
-    2: [[2,0,0],[4,0,0]],
-    3: [[0,3,0],[0,3,0]],
-    4: [[0,4,0],[0,3,0]],
-    5: [[0,0,2],[0,0,2]],
-    6: [[0,0,6],[0,0,3]]
+    2: [[2, 0, 0], [4, 0, 0]],
+    3: [[0, 3, 0], [0, 3, 0]],
+    4: [[0, 4, 0], [0, 3, 0]],
+    5: [[0, 0, 2], [0, 0, 2]],
+    6: [[0, 0, 6], [0, 0, 3]],
 }
 
 # Tracks of Destiny, wbmat, tracemat[green,blue,purple], commonmat[green,blue,purple]
 tracematerials5 = {
-    2: [0,0,[0,0,0],[3,0,0]],
-    3: [0,0,[3,0,0],[6,0,0]],
-    4: [0,0,[0,3,0],[0,3,0]],
-    5: [0,0,[0,5,0],[0,4,0]],
-    6: [0,0,[0,7,0],[0,6,0]],
-    7: [0,0,[0,0,3],[0,0,3]],
-    8: [0,1,[0,0,5],[0,0,4]],
-    9: [1,1,[0,0,8],[0,0,0]],
-    10:[1,1,[0,0,14],[0,0,0]]
+    2: [0, 0, [0, 0, 0], [3, 0, 0]],
+    3: [0, 0, [3, 0, 0], [6, 0, 0]],
+    4: [0, 0, [0, 3, 0], [0, 3, 0]],
+    5: [0, 0, [0, 5, 0], [0, 4, 0]],
+    6: [0, 0, [0, 7, 0], [0, 6, 0]],
+    7: [0, 0, [0, 0, 3], [0, 0, 3]],
+    8: [0, 1, [0, 0, 5], [0, 0, 4]],
+    9: [1, 1, [0, 0, 8], [0, 0, 0]],
+    10: [1, 1, [0, 0, 14], [0, 0, 0]],
 }
 
 tracematerials4 = {
-    2: [0,0,[0,0,0],[2,0,0]],
-    3: [0,0,[2,0,0],[4,0,0]],
-    4: [0,0,[0,2,0],[0,2,0]],
-    5: [0,0,[0,4,0],[0,3,0]],
-    6: [0,0,[0,6,0],[0,5,0]],
-    7: [0,0,[0,0,2],[0,0,2]],
-    8: [0,1,[0,0,4],[0,0,3]],
-    9: [0,1,[0,0,6],[0,0,0]],
-    10:[1,1,[0,0,11],[0,0,0]]
+    2: [0, 0, [0, 0, 0], [2, 0, 0]],
+    3: [0, 0, [2, 0, 0], [4, 0, 0]],
+    4: [0, 0, [0, 2, 0], [0, 2, 0]],
+    5: [0, 0, [0, 4, 0], [0, 3, 0]],
+    6: [0, 0, [0, 6, 0], [0, 5, 0]],
+    7: [0, 0, [0, 0, 2], [0, 0, 2]],
+    8: [0, 1, [0, 0, 4], [0, 0, 3]],
+    9: [0, 1, [0, 0, 6], [0, 0, 0]],
+    10: [1, 1, [0, 0, 11], [0, 0, 0]],
 }
 
 # bossmat, commonmat[green,blue,purple]
 levelmaterials5 = {
-    30: [0,[5,0,0]],
-    40: [0,[10,0,0]],
-    50: [3,[0,6,0]],
-    60: [7,[0,9,0]],
-    70: [20,[0,0,6]],
-    80: [35,[0,0,9]]
+    30: [0, [5, 0, 0]],
+    40: [0, [10, 0, 0]],
+    50: [3, [0, 6, 0]],
+    60: [7, [0, 9, 0]],
+    70: [20, [0, 0, 6]],
+    80: [35, [0, 0, 9]],
 }
 
 levelmaterials4 = {
-    30: [0,[4,0,0]],
-    40: [0,[8,0,0]],
-    50: [2,[0,5,0]],
-    60: [5,[0,8,0]],
-    70: [15,[0,0,5]],
-    80: [28,[0,0,7]]
+    30: [0, [4, 0, 0]],
+    40: [0, [8, 0, 0]],
+    50: [2, [0, 5, 0]],
+    60: [5, [0, 8, 0]],
+    70: [15, [0, 0, 5]],
+    80: [28, [0, 0, 7]],
 }
 
 # commonmat, tracemat
 weaponmaterials5 = {
-    30: [[8,0,0],[0,0,0]],
-    40: [[12,0,0],[4,0,0]],
-    50: [[0,8,0],[0,4,0]],
-    60: [[0,12,0],[0,8,0]],
-    70: [[0,0,6],[0,0,5]],
-    80: [[0,0,8],[0,0,10]]
+    30: [[8, 0, 0], [0, 0, 0]],
+    40: [[12, 0, 0], [4, 0, 0]],
+    50: [[0, 8, 0], [0, 4, 0]],
+    60: [[0, 12, 0], [0, 8, 0]],
+    70: [[0, 0, 6], [0, 0, 5]],
+    80: [[0, 0, 8], [0, 0, 10]],
 }
 
 weaponmaterials4 = {
-    30: [[5,0,0],[0,0,0]],
-    40: [[10,0,0],[3,0,0]],
-    50: [[0,6,0],[0,3,0]],
-    60: [[0,9,0],[0,6,0]],
-    70: [[0,0,5],[0,0,4]],
-    80: [[0,0,7],[0,0,8]]
+    30: [[5, 0, 0], [0, 0, 0]],
+    40: [[10, 0, 0], [3, 0, 0]],
+    50: [[0, 6, 0], [0, 3, 0]],
+    60: [[0, 9, 0], [0, 6, 0]],
+    70: [[0, 0, 5], [0, 0, 4]],
+    80: [[0, 0, 7], [0, 0, 8]],
 }
 
 relicsets = [
@@ -449,7 +711,7 @@ relicsets = [
     "Sigonia",
     "Izumo Gensei",
     "Duran Dynasty",
-    "Kalpagni Lantern"
+    "Kalpagni Lantern",
 ]
 
 relicpieces = {
@@ -488,7 +750,7 @@ relicpieces = {
     "Sigonia": ["Orb", "Rope"],
     "Izumo Gensei": ["Orb", "Rope"],
     "Duran Dynasty": ["Orb", "Rope"],
-    "Kalpagni Lantern": ["Orb", "Rope"] 
+    "Kalpagni Lantern": ["Orb", "Rope"],
 }
 
 relicmainstats = {
@@ -496,8 +758,19 @@ relicmainstats = {
     "Hand": ["Atk"],
     "Torso": ["HP%", "Atk%", "Def%", "CR%", "CD%", "Heal%", "EHR%"],
     "Feet": ["HP%", "Atk%", "Def%", "Spd"],
-    "Orb": ["HP%", "Atk%", "Def%", "Phys%", "Fire%", "Ice%", "Elec%", "Wind%", "Qua%", "Ima%"],
-    "Rope": ["BE%", "ERR%", "HP%", "Atk%", "Def%"]
+    "Orb": [
+        "HP%",
+        "Atk%",
+        "Def%",
+        "Phys%",
+        "Fire%",
+        "Ice%",
+        "Elec%",
+        "Wind%",
+        "Qua%",
+        "Ima%",
+    ],
+    "Rope": ["BE%", "ERR%", "HP%", "Atk%", "Def%"],
 }
 
 relicsubstats = ["HP%", "Atk%", "Def%", "Spd", "CR%", "CD%", "EHR%", "Res%", "BE%"]
