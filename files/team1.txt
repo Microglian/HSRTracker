@@ -10,9 +10,7 @@ Relic,Clara,team00000062,5,Glacial Forest,Hand,Atk,Atk%,EHR%,Spd,CD%
 Level,Acheron,team00000067,1,80
 Level,Clara,team00000068,7,80
 Level,Clara,team00000069,8,80
-Relic,Clara,team00000070,9,Wild Wheat,Head,HP
-
-Relic,Clara,team00000071,10,Wild Wheat,Head,HP
-
-Relic,Clara,team00000072,11,Wild Wheat,Head,HP
+Relic,Clara,team00000070,9,Wild Wheat,Head,HP,Atk%,EHR%,Spd,CD%
+Relic,Clara,team00000071,10,Wild Wheat,Head,HP,Atk%,EHR%,Spd,CD%
+Relic,Clara,team00000072,11,Wild Wheat,Head,HP,Atk%,EHR%,Spd,CD%
 WeaponLevel,Clara,team00000073,12,80

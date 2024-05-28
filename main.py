@@ -2747,10 +2747,10 @@ class Tabset:
 
     def prepare(self):
         # Separate presentation team data from storage team data
-        for team in self.teamsource:
-            self.teams.append(team)
+        for teamthing in self.teamsource:
+            self.teams.append(teamthing)
         # Create team frames in frames_teams
-        for team in self.teams:
+        for teamthing in self.teams:
             self.frames_teams.append(Tab(self.notebook))
 
         # Get presentable data from gacha tasks.
@@ -2809,8 +2809,9 @@ def gacha_add_task(priority: str) -> None:
     tabset.gachasource.tasks.append(
         gacha.GachaTask(f"gacha{data.next_uuid()}", priority, pos, "Acheron", "E0")
     )
-    data.set_gacha(tabset.gachasource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_gacha(tabset.gachasource)
+        tabset.reload()
 
 
 def gacha_move_up(uuid, priority):
@@ -2844,8 +2845,9 @@ def gacha_move_up(uuid, priority):
         if posswapped1 and posswapped2:
             print(f"Moved {uuid} up")
             break
-    data.set_gacha(tabset.gachasource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_gacha(tabset.gachasource)
+        tabset.reload()
 
 
 def gacha_change_priority(uuid, priority):
@@ -2868,8 +2870,9 @@ def gacha_change_priority(uuid, priority):
             gachatask.priority = priority
             gachatask.pos = pos
             break
-    data.set_gacha(tabset.gachasource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_gacha(tabset.gachasource)
+        tabset.reload()
 
 
 def gacha_delete_task(uuid):
@@ -2878,8 +2881,9 @@ def gacha_delete_task(uuid):
         if tabset.gachasource.tasks[i].uuid == uuid:
             tabset.gachasource.tasks.pop(i)
             break
-    data.set_gacha(tabset.gachasource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_gacha(tabset.gachasource)
+        tabset.reload()
 
 
 def gacha_set_object(uuid, objectname):
@@ -2888,8 +2892,9 @@ def gacha_set_object(uuid, objectname):
         if gachatask.uuid == uuid:
             gachatask.objectname = objectname
             break
-    data.set_gacha(tabset.gachasource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_gacha(tabset.gachasource)
+        tabset.reload()
 
 
 def gacha_set_target(uuid, target):
@@ -2898,8 +2903,9 @@ def gacha_set_target(uuid, target):
         if gachatask.uuid == uuid:
             gachatask.target = target
             break
-    data.set_gacha(tabset.gachasource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_gacha(tabset.gachasource)
+        tabset.reload()
 
 
 def team_set_character(team_ref, char_ref, char_name):
@@ -2913,8 +2919,9 @@ def team_set_character(team_ref, char_ref, char_name):
             tabset.teamsource[team_ref - 1].character3["Name"] = char_name
         case 3:
             tabset.teamsource[team_ref - 1].character4["Name"] = char_name
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_set_weapon(team_ref, char_ref, wep_name):
@@ -2928,8 +2935,9 @@ def team_set_weapon(team_ref, char_ref, wep_name):
             tabset.teamsource[team_ref - 1].character3["Weapon"] = wep_name
         case 3:
             tabset.teamsource[team_ref - 1].character4["Weapon"] = wep_name
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_set_character_level(team_ref, char_ref, char_level):
@@ -2943,8 +2951,9 @@ def team_set_character_level(team_ref, char_ref, char_level):
             tabset.teamsource[team_ref - 1].character3["Level"] = char_level
         case 3:
             tabset.teamsource[team_ref - 1].character4["Level"] = char_level
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_set_weapon_level(team_ref, char_ref, wep_level):
@@ -2958,8 +2967,9 @@ def team_set_weapon_level(team_ref, char_ref, wep_level):
             tabset.teamsource[team_ref - 1].character3["WeaponLV"] = wep_level
         case 3:
             tabset.teamsource[team_ref - 1].character4["WeaponLV"] = wep_level
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_set_trace_basic(team_ref, char_ref, basic_level):
@@ -2973,8 +2983,9 @@ def team_set_trace_basic(team_ref, char_ref, basic_level):
             tabset.teamsource[team_ref - 1].character3["BasicLV"] = basic_level[1:]
         case 3:
             tabset.teamsource[team_ref - 1].character4["BasicLV"] = basic_level[1:]
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_set_trace_skill(team_ref, char_ref, skill_level):
@@ -2988,8 +2999,9 @@ def team_set_trace_skill(team_ref, char_ref, skill_level):
             tabset.teamsource[team_ref - 1].character3["SkillLV"] = skill_level[1:]
         case 3:
             tabset.teamsource[team_ref - 1].character4["SkillLV"] = skill_level[1:]
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_set_trace_ult(team_ref, char_ref, ult_level):
@@ -3003,8 +3015,9 @@ def team_set_trace_ult(team_ref, char_ref, ult_level):
             tabset.teamsource[team_ref - 1].character3["UltLV"] = ult_level[1:]
         case 3:
             tabset.teamsource[team_ref - 1].character4["UltLV"] = ult_level[1:]
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_set_trace_talent(team_ref, char_ref, talent_level):
@@ -3018,8 +3031,9 @@ def team_set_trace_talent(team_ref, char_ref, talent_level):
             tabset.teamsource[team_ref - 1].character3["TalentLV"] = talent_level[1:]
         case 3:
             tabset.teamsource[team_ref - 1].character4["TalentLV"] = talent_level[1:]
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_set_ascension(team_ref, char_ref, asc_trace, status):
@@ -3037,8 +3051,9 @@ def team_set_ascension(team_ref, char_ref, asc_trace, status):
             tabset.teamsource[team_ref - 1].character3[f"{asc_trace}Trace"] = on
         case 3:
             tabset.teamsource[team_ref - 1].character4[f"{asc_trace}Trace"] = on
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_add_task(team_ref, char_name, task_type):
@@ -3086,11 +3101,15 @@ def team_add_task(team_ref, char_name, task_type):
                     "Wild Wheat",
                     "Head",
                     "HP",
+                    "Atk",
+                    "HP",
+                    "Def",
+                    "Spd"
                 )
             )
-
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_clear_column(team_ref, char_name):
@@ -3102,8 +3121,9 @@ def team_clear_column(team_ref, char_name):
     tasks_to_pop = tasks_to_pop[::-1]
     for i in tasks_to_pop:
         tabset.teamsource[team_ref - 1].tasks.pop(i)
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_swap_character(team_ref, char_ref, direction):
@@ -3147,8 +3167,9 @@ def team_swap_character(team_ref, char_ref, direction):
                     team_ref - 1
                 ].character3
                 tabset.teamsource[team_ref - 1].character3 = temp
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_level_setlevel(team_ref, uuid, level):
@@ -3157,8 +3178,9 @@ def team_level_setlevel(team_ref, uuid, level):
         if teamtask.uuid == uuid:
             teamtask.level = level
             break
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_weapon_setlevel(team_ref, uuid, level):
@@ -3167,8 +3189,9 @@ def team_weapon_setlevel(team_ref, uuid, level):
         if teamtask.uuid == uuid:
             teamtask.level = level
             break
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_ascension_set(team_ref, uuid, trace):
@@ -3177,8 +3200,9 @@ def team_ascension_set(team_ref, uuid, trace):
         if teamtask.uuid == uuid:
             teamtask.trace = trace
             break
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_trace_settrace(team_ref, uuid, trace):
@@ -3187,8 +3211,9 @@ def team_trace_settrace(team_ref, uuid, trace):
         if teamtask.uuid == uuid:
             teamtask.trace = trace
             break
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_trace_settarget(team_ref, uuid, target):
@@ -3197,8 +3222,9 @@ def team_trace_settarget(team_ref, uuid, target):
         if teamtask.uuid == uuid:
             teamtask.target = target
             break
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_relic_setset(team_ref, uuid, set):
@@ -3207,8 +3233,9 @@ def team_relic_setset(team_ref, uuid, set):
         if teamtask.uuid == uuid:
             teamtask.set = set
             break
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":  
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_relic_setslot(team_ref, uuid, slot):
@@ -3217,8 +3244,9 @@ def team_relic_setslot(team_ref, uuid, slot):
         if teamtask.uuid == uuid:
             teamtask.slot = slot
             break
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":  
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_relic_setstat(team_ref, uuid, stat):
@@ -3227,8 +3255,9 @@ def team_relic_setstat(team_ref, uuid, stat):
         if teamtask.uuid == uuid:
             teamtask.mainstat = stat
             break
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":  
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_relic_setsubstat(team_ref, uuid, index, substat):
@@ -3237,8 +3266,9 @@ def team_relic_setsubstat(team_ref, uuid, index, substat):
         if teamtask.uuid == uuid:
             teamtask.substats[index] = substat
             break
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":  
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_move_up(team_ref, uuid, char_name):
@@ -3273,8 +3303,9 @@ def team_move_up(team_ref, uuid, char_name):
         if posswapped1 and posswapped2:
             print(f"Moved {uuid} up")
             break
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":  
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 def team_delete_task(team_ref, uuid):
@@ -3283,14 +3314,15 @@ def team_delete_task(team_ref, uuid):
         if tabset.teamsource[team_ref - 1].tasks[i].uuid == uuid:
             tabset.teamsource[team_ref - 1].tasks.pop(i)
             break
-    data.set_teams(tabset.teamsource)
-    tabset.reload()
+    if __name__ == "__main__":    
+        data.set_teams(tabset.teamsource)
+        tabset.reload()
 
 
 # ------------- Runtime -------------
+if __name__ == "__main__":
 
-
-tabset.reload()
-root.mainloop()
+    tabset.reload()
+    root.mainloop()
 
 # --------------------- Testing --------------------------
